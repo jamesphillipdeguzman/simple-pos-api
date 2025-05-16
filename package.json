@@ -1,0 +1,35 @@
+{
+  "name": "simpleposapi",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "inspect": "node --inspect server.js",
+    "debug": "node --inspect-brk server.js"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "api",
+    "simple",
+    "POS",
+    "products",
+    "sales"
+  ],
+  "author": "James Phillip De Guzman",
+  "license": "ISC",
+  "description": "A simple POS (Point-of-Sale) consumable API by frontend.",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.14.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
