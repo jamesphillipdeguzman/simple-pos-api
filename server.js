@@ -1,9 +1,10 @@
-import connectDB from "./db/connection.js";
-import { PORT, app } from "./app.js";
 import dotenv from "dotenv";
-
 // Load environment variables from .env file
 dotenv.config();
+
+import connectDB from "./src/db/connection.js";
+import { PORT, app } from "./app.js";
+
 
 const startServer = async () => {
   try {

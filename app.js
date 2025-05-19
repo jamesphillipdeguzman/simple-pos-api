@@ -16,7 +16,7 @@ app.use(express());
 
 // Greet
 app.get("/", (req, res) => {
-  res.send("Hello from app.js!");
+  res.send("Hello James!");
 });
 
 // Mount routes at /api/products and /api/sales
