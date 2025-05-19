@@ -5,8 +5,6 @@ import cors from "cors";
 
 // Initialize an express app
 const app = express();
-// Define PORT from environment variable or default to 3000
-const PORT = process.env.port || 3001;
 
 // CORS middleware
 app.use(cors());
@@ -16,11 +14,11 @@ app.use(express());
 
 // Greet
 app.get("/", (req, res) => {
-  res.send("Hello James!");
+  res.send("Hello James De Guzman!");
 });
 
 // Mount routes at /api/products and /api/sales
 // app.use("/api/products", productRoutes);
 // app.use("/api/sales", salesRoutes);
 
-export { PORT, app };
+export { app };
