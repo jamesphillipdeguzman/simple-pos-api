@@ -1,5 +1,5 @@
-import express from "express";
-import cors from "cors";
+import express from 'express';
+import cors from 'cors';
 // import productRoutes from "./controller/productsController.js";
 // import salesRoutes from "./controller/salesController.js";
 
@@ -13,8 +13,8 @@ app.use(cors());
 app.use(express());
 
 // Greet
-app.get("/", (req, res) => {
-  res.send("Hello James De Guzman!");
+app.get('/', (req, res) => {
+  res.send('Hello James Phillip De Guzman!');
 });
 
 // Mount routes at /api/products and /api/sales
