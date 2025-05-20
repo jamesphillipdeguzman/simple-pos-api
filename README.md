@@ -20,17 +20,17 @@ This project is a part of my CSE341 coursework (Weeks 3–4) at BYU–Idaho. It 
 
 ## 🧪 Endpoints Overview
 
-- `GET /products`
-- `GET /products/:id`
-- `POST /products`
-- `PUT /products/:id`
-- `DELETE /products/:id`
+- `GET /api/products`
+- `GET /api/products/:id`
+- `POST /api/products`
+- `PUT /api/products/:id`
+- `DELETE /api/products/:id`
 
-- `GET /sales`
-- `GET /sales/:id`
-- `POST /sales`
-- `PUT /sales/:id`
-- `DELETE /sales/:id`
+- `GET /api/sales`
+- `GET /api/sales/:id`
+- `POST /api/sales`
+- `PUT /api/sales/:id`
+- `DELETE /api/sales/:id`
 
 ## ✅ Installation
 
