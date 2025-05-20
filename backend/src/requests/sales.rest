@@ -1,1 +1,6 @@
+### GET all sales
 GET http://localhost:3001/api/sales
+
+
+### GET a sale by Id
+GET http://localhost:3001/api/sales/682c95006fd75cb7c058dbe7

@@ -1,6 +1,6 @@
-import { findAllSales } from '../services/sale.service.js';
+import { findAllSales, findSaleById } from '../services/sale.service.js';
 
-// GET
+// GET all sales
 export const getSales = async (req, res) => {
   console.log('GET /api/sales was called.');
   try {
@@ -9,5 +9,20 @@ export const getSales = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'An error occured', error: error.message });
+  }
+};
+
+// GET a sale by Id
+export const getSaleById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const sale = await findSaleById(id);
+    res.status(200).json(sale);
+    console.log(`GET /api/sales/${id} was called.`);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: 'The sale was not found', error: error.message });
   }
 };
