@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-// import productRoutes from "./controller/productsController.js";
+import productRoutes from './src/routes/product.route.js';
+
 // import salesRoutes from "./controller/salesController.js";
 
 // Initialize an express app
@@ -10,15 +11,18 @@ const app = express();
 app.use(cors());
 
 // Parse JSON payloads
-app.use(express());
+app.use(express.json());
 
-// Greet
+// Parse form payloads
+app.use(express.urlencoded({ extended: true }));
+
+// Greet the user
 app.get('/', (req, res) => {
-  res.send('Hello James Phillip De Guzman!');
+  res.send('Welcome to Simple-POS-API by James De Guzman!');
 });
 
 // Mount routes at /api/products and /api/sales
-// app.use("/api/products", productRoutes);
+app.use('/api/products', productRoutes);
 // app.use("/api/sales", salesRoutes);
 
 export { app };

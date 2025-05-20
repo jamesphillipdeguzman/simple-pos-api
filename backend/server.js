@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 // Load environment variables from .env file
 dotenv.config();
 
-import connectDB from './src/db/connection.js';
+import connectDB from './src/db/mongoose.js';
 import { app } from './app.js';
 
 // Define PORT from environment variables
