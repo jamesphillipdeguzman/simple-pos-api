@@ -29,6 +29,8 @@ This project is a part of my CSE341 coursework (Weeks 3–4) at BYU–Idaho. It 
 - `GET /sales`
 - `GET /sales/:id`
 - `POST /sales`
+- `PUT /sales/:id`
+- `DELETE /sales/:id`
 
 ## ✅ Installation
 
@@ -37,3 +39,4 @@ git clone https://github.com/jamesphillipdeguzman/simple-pos-api.git
 cd simple-pos-api
 npm install
 npm run server
+```
