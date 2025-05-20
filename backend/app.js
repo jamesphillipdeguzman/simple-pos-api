@@ -1,8 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import productRoutes from './src/routes/product.route.js';
-
-// import salesRoutes from "./controller/salesController.js";
+import saleRoutes from './src/routes/sale.route.js';
 
 // Initialize an express app
 const app = express();
@@ -23,6 +22,6 @@ app.get('/', (req, res) => {
 
 // Mount routes at /api/products and /api/sales
 app.use('/api/products', productRoutes);
-// app.use("/api/sales", salesRoutes);
+app.use('/api/sales', saleRoutes);
 
 export { app };
