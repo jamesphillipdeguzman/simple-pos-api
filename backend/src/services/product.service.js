@@ -9,3 +9,8 @@ export const findAllProducts = () => {
 export const findProductById = (id) => {
   return Product.findById(id);
 };
+
+// POST a product
+export const createProduct = (data) => {
+  return Product.create(data);
+};

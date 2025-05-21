@@ -2,8 +2,19 @@
 GET http://localhost:3001/api/products
 
 ### GET a product by Id
-GET http://localhost:3001/api/products/682c9a986fd75cb7c058dbee
+GET http://localhost:3001/api/products/682c9a8d6fd75cb7c058dbec
 
+### POST a product
+POST http://localhost:3001/api/products
+Content-Type: application/json
 
-
+{
+  "name": "Ergonomic Mouse Pad",
+  "sku": 1004,
+  "stock": 70,
+  "description": "A premium ergonomic mouse pad designed for smooth tracking and wrist comfort, ideal for wireless mice.",
+  "price": 12.99,
+  "category": "Electronics Accessories",
+  "supplier": "LogiTech"
+}
 
