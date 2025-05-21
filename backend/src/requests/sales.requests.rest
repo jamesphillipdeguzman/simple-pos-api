@@ -11,9 +11,9 @@ Content-Type: application/json
 
 {
     "productId": "682d669c905734f88f56275e",
-    "priceAtSale": 12.99,
-    "quantity": 5,
-    "totalAmount": 64.95,
+    "priceAtSale": 20,
+    "quantity": 0,
+    "totalAmount": 0,
     "cashierName": "Bernice",
-    "paymentMethod": "debit"
+    "paymentMethod": "paypal"
 }

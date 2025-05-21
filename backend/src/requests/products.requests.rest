@@ -9,12 +9,25 @@ POST http://localhost:3001/api/products
 Content-Type: application/json
 
 {
-  "name": "Ergonomic Mouse Pad",
-  "sku": 1004,
-  "stock": 70,
-  "description": "A premium ergonomic mouse pad designed for smooth tracking and wrist comfort, ideal for wireless mice.",
-  "price": 12.99,
-  "category": "Electronics Accessories",
-  "supplier": "LogiTech"
+  "name": "TEST PRODUCT",
+  "sku": 1005,
+  "stock": 1,
+  "description": "TEST DESC",
+  "price": 5.99,
+  "category": "TEST CATEGORY",
+  "supplier": "TEST SUPPLIER"
 }
 
+### PUT or UPDATE a product
+PUT http://localhost:3001/api/products/682dfe696145d9360bd4fea0
+Content-Type: application/json
+
+{
+  "name": "TEST PRODUCT 1",
+  "sku": 1005,
+  "stock": 0,
+  "description": "TEST DESC",
+  "price": 5.99,
+  "category": "TEST CATEGORY",
+  "supplier": "TEST SUPPLIER"
+}

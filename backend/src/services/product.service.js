@@ -14,3 +14,11 @@ export const findProductById = (id) => {
 export const createProduct = (data) => {
   return Product.create(data);
 };
+
+// Update a product
+export const updateProductById = (id, updates) => {
+  return Product.findByIdAndUpdate(id, updates, {
+    new: true,
+    runValidators: true,
+  });
+};

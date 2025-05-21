@@ -5,6 +5,9 @@ import {
   postSale,
 } from '../controllers/sale.controller.js';
 
+import { validateSale } from '../middlewares/sale.validation.middleware.js';
+import { validate } from '../middlewares/validate.middleware.js';
+
 const router = express.Router();
 
 // GET all sales
@@ -14,6 +17,6 @@ router.get('/', getSales);
 router.get('/:id', getSaleById);
 
 // POST a sale
-router.post('/', postSale);
+router.post('/', validateSale, validate, postSale);
 
 export default router;
