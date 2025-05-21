@@ -9,3 +9,8 @@ export const findAllSales = () => {
 export const findSaleById = (id) => {
   return Sale.findById(id);
 };
+
+// POST a sale
+export const createSale = (data) => {
+  return Sale.create(data);
+};

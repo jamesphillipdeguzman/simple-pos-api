@@ -4,3 +4,16 @@ GET http://localhost:3001/api/sales
 
 ### GET a sale by Id
 GET http://localhost:3001/api/sales/682c95006fd75cb7c058dbe7
+
+### POST a sale
+POST http://localhost:3001/api/sales
+Content-Type: application/json
+
+{
+    "productId": "682d669c905734f88f56275e",
+    "priceAtSale": 12.99,
+    "quantity": 5,
+    "totalAmount": 64.95,
+    "cashierName": "Bernice",
+    "paymentMethod": "debit"
+}
