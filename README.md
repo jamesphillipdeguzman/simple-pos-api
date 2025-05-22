@@ -41,6 +41,6 @@ npm install
 npm run server
 ```
 
-## Installation
+## Deployed API
 
 [🔗 https://simple-pos-api.onrender.com/](https://simple-pos-api.onrender.com/)
