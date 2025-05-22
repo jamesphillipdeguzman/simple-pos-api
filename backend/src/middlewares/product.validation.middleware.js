@@ -4,20 +4,28 @@ import { body } from 'express-validator';
 // POST request validation: validateProduct
 export const validateProduct = [
   body('name').notEmpty().withMessage('Product name is required'),
-  body('price').isFloat({ gt: 0 }).withMessage('Price must be greater than 0'),
   body('stock')
     .isInt({ min: 0 })
     .withMessage('Stock is a whole number greater than or equal 0'),
-  body('category').notEmpty().withMessage('Category is required'),
   body('description')
     .optional()
     .isString()
     .withMessage('Description must be string'),
+  body('price').isFloat({ gt: 0 }).withMessage('Price must be greater than 0'),
+  body('category').notEmpty().withMessage('Category is required'),
   body('supplier')
     .optional()
     .isString()
     .withMessage('Supplier must be a string'),
 ];
+
+// "name": "",
+//   "sku": null,
+//   "stock": -1,
+//   "description": "",
+//   "price": -1,
+//   "category": "",
+//   "supplier": 3
 
 // PUT request validation: validateProductUpdate
 export const validateProductUpdate = [
@@ -25,19 +33,23 @@ export const validateProductUpdate = [
     .optional()
     .notEmpty()
     .withMessage('Name, if provided must not be empty'),
-  body('price')
-    .optional()
-    .isFloat({ gt: 0 })
-    .withMessage('Price must be greater than 0'),
   body('stock')
     .optional()
     .isInt({ min: 0 })
     .withMessage('Stock is a whole number greater than or equal 0'),
-  body('category').optional().notEmpty().withMessage('Category is required'),
   body('description')
     .optional()
     .isString()
     .withMessage('Description must be string'),
+  body('price')
+    .optional()
+    .isFloat({ gt: 0 })
+    .withMessage('Price must be greater than 0'),
+  body('category').optional().notEmpty().withMessage('Category is required'),
+  body('supplier')
+    .optional()
+    .isString()
+    .withMessage('Supplier must be a string'),
 ];
 
 // const productSchema = new mongoose.Schema({
