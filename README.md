@@ -2,7 +2,7 @@
 
 This project is a part of my CSE341 coursework (Weeks 3–4) at BYU–Idaho. It implements a basic Point of Sale (POS) API using Node.js, Express, and MongoDB.
 
-## 📦 Features
+## ✅ Features
 
 - RESTful API for managing **products** and **sales** collections in MongoDB.
 - Built with the **MVC (Model-View-Controller)** architecture to enhance readability, maintainability, and scalability.
@@ -10,7 +10,7 @@ This project is a part of my CSE341 coursework (Weeks 3–4) at BYU–Idaho. It 
 - Includes **ESLint** and **Prettier** for consistent code formatting and linting.
 - Designed to be easily extendable for future features like authentication and reporting.
 
-## 📌 Technologies Used
+## ✅ Technologies Used
 
 - **Node.js**
 - **Express**
@@ -18,7 +18,7 @@ This project is a part of my CSE341 coursework (Weeks 3–4) at BYU–Idaho. It 
 - **ESLint** + **Prettier**
 - **Swagger (jsdoc and ui-express)** for API documentation
 
-## 🧪 Endpoints Overview
+## ✅ Endpoints Overview
 
 - `GET /api/products`
 - `GET /api/products/:id`
