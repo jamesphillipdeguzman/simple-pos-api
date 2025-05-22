@@ -18,6 +18,12 @@ export const validateSale = [
     .toFloat()
     .isFloat({ gte: 0 })
     .withMessage('Total amount is greater than or equal 0'),
+  body('cashierName')
+    .optional()
+    .isString()
+    .trim()
+    .notEmpty()
+    .withMessage('Cashier name cannot be empty if provided'),
   body('paymentMethod')
     .customSanitizer((value) => {
       if (value === undefined || value === null || value === '') {
@@ -27,13 +33,19 @@ export const validateSale = [
     })
     .isIn(['cash', 'credit', 'debit', 'paypal'])
     .withMessage('Payment method options are [cash, credit, debit, paypal]'),
-  body('cashierName')
-    .optional()
-    .isString()
-    .trim()
-    .notEmpty()
-    .withMessage('Cashier name cannot be empty if provided'),
+ 
 ];
+
+// {
+//   "_id": "682c95006fd75cb7c058dbe5",
+//   "productId": "682c87116fd75cb7c058dbe2",
+//   "priceAtSale": 29.99,
+//   "quantity": 2,
+//   "totalAmount": 59.98,
+//   "date": "2025-05-20T14:30:00.000Z",
+//   "cashierName": "Alice",
+//   "paymentMethod": "cash"
+// },
 
 // PUT request validation: validateSaleUpdate
 export const validateSaleUpdate = [
@@ -52,6 +64,12 @@ export const validateSaleUpdate = [
     .toFloat()
     .isFloat({ gte: 0 })
     .withMessage('Total amount is greater than or equal 0'),
+  body('cashierName')
+    .optional()
+    .isString()
+    .trim()
+    .notEmpty()
+    .withMessage('Cashier name cannot be empty if provided'),
   body('paymentMethod')
     .optional()
     .customSanitizer((value) => {
@@ -62,12 +80,7 @@ export const validateSaleUpdate = [
     })
     .isIn(['cash', 'credit', 'debit', 'paypal'])
     .withMessage('Payment method options are [cash, credit, debit, paypal]'),
-  body('cashierName')
-    .optional()
-    .isString()
-    .trim()
-    .notEmpty()
-    .withMessage('Cashier name cannot be empty if provided'),
+
 ];
 
 // const salesSchema = new mongoose.Schema({
