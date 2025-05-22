@@ -12,6 +12,8 @@ import { validate } from '../middlewares/validate.middleware.js';
 
 const router = express.Router();
 
+
+
 // GET all products
 router.get('/', getProducts);
 
