@@ -7,6 +7,9 @@
   },
   "servers": [
     {
+      "url": "https://simple-pos-api.onrender.com/"
+    },
+    {
       "url": "http://localhost:3001"
     }
   ],
@@ -177,7 +180,7 @@
             "name": "id",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/Sale"
+              "type": "string"
             },
             "description": "The unique ID of the product"
           }
@@ -187,7 +190,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Sale"
+                "$ref": "#/components/schemas/Product"
               }
             }
           }

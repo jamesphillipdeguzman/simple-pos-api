@@ -86,14 +86,14 @@ router.post('/', validateProduct, validate, postProduct);
  *        name: id
  *        required: true
  *        schema:
- *          $ref: '#/components/schemas/Sale'
+ *          type: string
  *        description: The unique ID of the product
  *    requestBody:
  *      required: true
  *      content:
  *        application/json:
  *          schema:
- *           $ref: '#/components/schemas/Sale'
+ *           $ref: '#/components/schemas/Product'
  *    responses:
  *      200:
  *        description: Product updated

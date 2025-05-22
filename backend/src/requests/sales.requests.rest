@@ -10,12 +10,12 @@ POST http://localhost:3001/api/sales
 Content-Type: application/json
 
 {
-    "productId": "123",
-    "priceAtSale": "",
-    "quantity": "",
-    "totalAmount": "",
-    "cashierName": "",
-    "paymentMethod": "gcash"
+    "productId": "682f5861b1167099bb0a8169",
+    "priceAtSale": "149.99",
+    "quantity": -1,
+    "totalAmount": 149.99,
+    "cashierName": "Valerie",
+    "paymentMethod": "cash"
 }
 
 

@@ -29,6 +29,17 @@ Content-Type: application/json
 #   "supplier": "TEST SUPPLIER 3"
 # }
 
+# {
+#   "name": "PC Monitor",
+#   "sku": 100200,
+#   "stock": 20,
+#   "description": "24-inch monitor with HDMI support",
+#   "price": 149.99,
+#   "category": "Monitors",
+#   "supplier": "TechSupply Co."  
+# }
+
+
 
 ### PUT or UPDATE a product
 PUT http://localhost:3001/api/products/682ea9733aa4c670f11af98d

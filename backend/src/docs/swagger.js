@@ -12,6 +12,9 @@ const options = {
     },
     servers: [
       {
+        url: 'https://simple-pos-api.onrender.com/',
+      },
+      {
         url: 'http://localhost:3001',
       },
     ],
