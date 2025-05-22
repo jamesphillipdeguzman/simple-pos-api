@@ -4,6 +4,7 @@ import { body } from 'express-validator';
 // POST request validation: validateProduct
 export const validateProduct = [
   body('name').notEmpty().withMessage('Product name is required'),
+  body('sku').notEmpty().withMessage('SKU is required'),
   body('stock')
     .isInt({ min: 0 })
     .withMessage('Stock is a whole number greater than or equal 0'),
@@ -33,6 +34,10 @@ export const validateProductUpdate = [
     .optional()
     .notEmpty()
     .withMessage('Name, if provided must not be empty'),
+  body('sku')
+    .optional()
+    .notEmpty()
+    .withMessage('SKU, if providded must not be empty'),
   body('stock')
     .optional()
     .isInt({ min: 0 })

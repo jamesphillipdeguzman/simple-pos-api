@@ -10,26 +10,45 @@ POST http://localhost:3001/api/sales
 Content-Type: application/json
 
 {
-    "productId": "682d669c905734f88f56275e",
-    "priceAtSale": -1,
-    "quantity": 0,
-    "totalAmount": 0,
-    "cashierName": "Angel",
-    "paymentMethod": "paypal"
+    "productId": "123",
+    "priceAtSale": "",
+    "quantity": "",
+    "totalAmount": "",
+    "cashierName": "",
+    "paymentMethod": "gcash"
 }
+
+
+# {
+#     "productId": "682d669c905734f88f56275e",
+#     "priceAtSale": 0,
+#     "quantity": 0,
+#     "totalAmount": 0,
+#     "cashierName": "Angel",
+#     "paymentMethod": "paypal"
+# }
 
 ### PUT or UPDATE a sale
 PUT http://localhost:3001/api/sales/682ea8a33aa4c670f11af984
 Content-Type: application/json
 
 {   
-    "productId": "682d669c905734f88f56275e",
-    "priceAtSale": 12.99,
-    "quantity": 5,
-    "totalAmount": 64.95,
-    "cashierName": "Bernice S. Sawal",
-    "paymentMethod": "credit"
+    "productId": "1234",
+    "priceAtSale": null,
+    "quantity": null,
+    "totalAmount": null,
+    "cashierName": "",
+    "paymentMethod": "paymaya"
 }
+
+# {   
+#     "productId": "682d669c905734f88f56275e",
+#     "priceAtSale": 12.99,
+#     "quantity": 5,
+#     "totalAmount": 64.95,
+#     "cashierName": "Bernice S. Sawal",
+#     "paymentMethod": "credit"
+# }
 
 ### DELETE a sale
 DELETE http://localhost:3001/api/sales/682eb06e30f847ef9d771819

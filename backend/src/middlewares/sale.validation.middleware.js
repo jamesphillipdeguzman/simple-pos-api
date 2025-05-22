@@ -23,6 +23,7 @@ export const validateSale = [
     .isString()
     .trim()
     .notEmpty()
+    .default('unknown')
     .withMessage('Cashier name cannot be empty if provided'),
   body('paymentMethod')
     .customSanitizer((value) => {
