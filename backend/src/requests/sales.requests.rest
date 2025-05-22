@@ -3,7 +3,7 @@ GET http://localhost:3001/api/sales
 
 
 ### GET a sale by Id
-GET http://localhost:3001/api/sales/682c95006fd75cb7c058dbe7
+GET http://localhost:3001/api/sales/682ea8a33aa4c670f11af984
 
 ### POST a sale
 POST http://localhost:3001/api/sales
@@ -11,15 +11,15 @@ Content-Type: application/json
 
 {
     "productId": "682d669c905734f88f56275e",
-    "priceAtSale": 20,
+    "priceAtSale": -1,
     "quantity": 0,
     "totalAmount": 0,
-    "cashierName": "Bernice",
+    "cashierName": "Angel",
     "paymentMethod": "paypal"
 }
 
 ### PUT or UPDATE a sale
-PUT http://localhost:3001/api/sales/682d6f17d56c436c8b9c174c
+PUT http://localhost:3001/api/sales/682ea8a33aa4c670f11af984
 Content-Type: application/json
 
 {   
@@ -31,3 +31,5 @@ Content-Type: application/json
     "paymentMethod": "credit"
 }
 
+### DELETE a sale
+DELETE http://localhost:3001/api/sales/682eb06e30f847ef9d771819

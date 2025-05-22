@@ -1,5 +1,7 @@
 import { body } from 'express-validator';
+// *** Product Validation ***
 
+// POST request validation: validateProduct
 export const validateProduct = [
   body('name').notEmpty().withMessage('Product name is required'),
   body('price').isFloat({ gt: 0 }).withMessage('Price must be greater than 0'),
@@ -11,8 +13,13 @@ export const validateProduct = [
     .optional()
     .isString()
     .withMessage('Description must be string'),
+  body('supplier')
+    .optional()
+    .isString()
+    .withMessage('Supplier must be a string'),
 ];
 
+// PUT request validation: validateProductUpdate
 export const validateProductUpdate = [
   body('name')
     .optional()

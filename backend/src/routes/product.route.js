@@ -4,6 +4,7 @@ import {
   getProductById,
   postProduct,
   updateProduct,
+  deleteProduct,
 } from '../controllers/product.controller.js';
 
 import { validateProduct } from '../middlewares/product.validation.middleware.js';
@@ -22,5 +23,8 @@ router.post('/', validateProduct, validate, postProduct);
 
 // PUT or UPDATE a product
 router.put('/:id', validateProduct, validate, updateProduct);
+
+// DELETE a product
+router.delete('/:id', deleteProduct);
 
 export default router;

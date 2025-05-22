@@ -5,6 +5,7 @@ import {
   findProductById,
   createProduct,
   updateProductById,
+  deleteProductById,
 } from '../services/product.service.js';
 
 // GET all products
@@ -48,15 +49,15 @@ export const getProductById = async (req, res) => {
 // POST a product
 export const postProduct = async (req, res) => {
   try {
-    const product = await createProduct(req.body);
+    const createdProduct = await createProduct(req.body);
 
-    if (!product) {
+    if (!createdProduct) {
       res.status(400).json({
         message: 'No product was created. Please check the request data.',
       });
     }
     console.log('POST /api/products was called.');
-    res.status(201).json(product);
+    res.status(201).json(createdProduct);
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -71,6 +72,7 @@ export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const updates = req.body;
+    console.log('Updates', updates);
 
     // Check if the ID is a valid Mongoose ObjectId
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -78,14 +80,39 @@ export const updateProduct = async (req, res) => {
     }
 
     // Update and return the new version of the product
-    const product = await updateProductById(id, updates);
+    const updatedProduct = await updateProductById(id, updates);
 
-    if (!product) {
+    if (!updatedProduct) {
       return res.status(404).json({ message: 'Product not found' });
     }
 
     console.log(`PUT /api/products/${id} was called.`);
-    res.status(200).json(product);
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: 'The product was not found', error: error.message });
+  }
+};
+
+// DELETE a product
+export const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Check if the ID is a valid Mongoose ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'Invalid product ID format' });
+    }
+
+    const deletedProduct = await deleteProductById(id);
+
+    if (!deletedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    console.log(`DELETE /api/products/${id} was called`);
+    res.status(200).json(deletedProduct);
   } catch (error) {
     console.error(error);
     res

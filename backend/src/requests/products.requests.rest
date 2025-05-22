@@ -9,25 +9,28 @@ POST http://localhost:3001/api/products
 Content-Type: application/json
 
 {
-  "name": "TEST PRODUCT",
-  "sku": 1005,
-  "stock": 1,
-  "description": "TEST DESC",
+  "name": "TEST PRODUCT 3",
+  "sku": 1006,
+  "stock": 2,
+  "description": "TEST DESC 3",
   "price": 5.99,
-  "category": "TEST CATEGORY",
-  "supplier": "TEST SUPPLIER"
+  "category": "TEST CATEGORY 3",
+  "supplier": "TEST SUPPLIER 3"
 }
 
 ### PUT or UPDATE a product
-PUT http://localhost:3001/api/products/682dfe696145d9360bd4fea0
+PUT http://localhost:3001/api/products/682ea9733aa4c670f11af98d
 Content-Type: application/json
 
 {
-  "name": "TEST PRODUCT 1",
+  "name": "TEST PRODUCT 2",
   "sku": 1005,
-  "stock": 0,
+  "stock": 5,
   "description": "TEST DESC",
   "price": 5.99,
   "category": "TEST CATEGORY",
   "supplier": "TEST SUPPLIER"
 }
+
+### DELETE a product
+DELETE http://localhost:3001/api/products/682ead2830f847ef9d771805

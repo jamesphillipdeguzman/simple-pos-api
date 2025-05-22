@@ -1,5 +1,7 @@
 import { body } from 'express-validator';
+// *** Sale Validation ***
 
+// POST request validation: validateSale
 export const validateSale = [
   body('productId')
     .isMongoId()
@@ -33,6 +35,7 @@ export const validateSale = [
     .withMessage('Cashier name cannot be empty if provided'),
 ];
 
+// PUT request validation: validateSaleUpdate
 export const validateSaleUpdate = [
   body('priceAtSale')
     .optional()

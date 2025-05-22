@@ -23,3 +23,8 @@ export const updateProductById = (id, updates) => {
     upsert: true, // Create document if not found, using the same _id (update if exists, insert if not)
   });
 };
+
+// DELETE a product
+export const deleteProductById = (id) => {
+  return Product.findByIdAndDelete(id);
+};

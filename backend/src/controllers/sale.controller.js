@@ -5,6 +5,7 @@ import {
   findSaleById,
   createSale,
   updateSaleById,
+  deleteSaleById,
 } from '../services/sale.service.js';
 
 // GET all sales
@@ -48,15 +49,15 @@ export const getSaleById = async (req, res) => {
 // POST a sale
 export const postSale = async (req, res) => {
   try {
-    const sale = await createSale(req.body);
-    if (!sale) {
+    const createdSale = await createSale(req.body);
+    if (!createdSale) {
       res.status(400).json({
         message: 'No sale was created. Please check the request data.',
       });
     }
 
     console.log('POST /api/sales was called.');
-    res.status(201).json(sale);
+    res.status(201).json(createdSale);
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -79,14 +80,39 @@ export const updateSale = async (req, res) => {
     }
 
     // Update and return the new version of the sale
-    const sale = await updateSaleById(id, updates);
+    const updatedSale = await updateSaleById(id, updates);
 
-    if (!sale) {
+    if (!updatedSale) {
       return res.status(404).json({ message: 'Sale not found' });
     }
 
     console.log(`PUT /api/sales/${id} was called`);
-    res.status(200).json(sale);
+    res.status(200).json(updatedSale);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: 'The sale was not found', error: error.message });
+  }
+};
+
+// DELETE a sale
+export const deleteSale = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Check if the ID is a valid Mongoose ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'Invalid product ID format' });
+    }
+
+    const deletedSale = await deleteSaleById(id);
+
+    if (!deletedSale) {
+      return res.status(404).json({ message: 'Sale not found' });
+    }
+    console.log(`DELETE /api/sales/${id} was called`);
+    res.status(200).json(deletedSale);
   } catch (error) {
     console.error(error);
     res

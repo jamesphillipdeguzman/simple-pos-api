@@ -23,3 +23,8 @@ export const updateSaleById = (id, updates) => {
     upsert: true, // update if exists, insert if not
   });
 };
+
+// DELETE a sale
+export const deleteSaleById = (id) => {
+  return Sale.findByIdAndDelete(id);
+};
