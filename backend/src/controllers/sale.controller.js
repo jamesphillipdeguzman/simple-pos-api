@@ -4,6 +4,7 @@ import {
   findAllSales,
   findSaleById,
   createSale,
+  updateSaleById,
 } from '../services/sale.service.js';
 
 // GET all sales
@@ -62,5 +63,34 @@ export const postSale = async (req, res) => {
       message: 'The sale was not created',
       error: error.message,
     });
+  }
+};
+
+// PUT or UPDATE a sale
+export const updateSale = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+    console.log('Updates', updates);
+
+    // Check if the ID is a valid Mongoose ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'Invalid Sale ID format' });
+    }
+
+    // Update and return the new version of the sale
+    const sale = await updateSaleById(id, updates);
+
+    if (!sale) {
+      return res.status(404).json({ message: 'Sale not found' });
+    }
+
+    console.log(`PUT /api/sales/${id} was called`);
+    res.status(200).json(sale);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: 'The sale was not found', error: error.message });
   }
 };

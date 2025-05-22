@@ -14,3 +14,12 @@ export const findSaleById = (id) => {
 export const createSale = (data) => {
   return Sale.create(data);
 };
+
+// PUT or UPDATE a sale
+export const updateSaleById = (id, updates) => {
+  return Sale.findByIdAndUpdate(id, updates, {
+    new: true, // return the updated document
+    runValidators: true, // run schema validators on update
+    upsert: true, // update if exists, insert if not
+  });
+};

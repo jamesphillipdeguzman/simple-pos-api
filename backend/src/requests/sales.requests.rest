@@ -17,3 +17,17 @@ Content-Type: application/json
     "cashierName": "Bernice",
     "paymentMethod": "paypal"
 }
+
+### PUT or UPDATE a sale
+PUT http://localhost:3001/api/sales/682d6f17d56c436c8b9c174c
+Content-Type: application/json
+
+{   
+    "productId": "682d669c905734f88f56275e",
+    "priceAtSale": 12.99,
+    "quantity": 5,
+    "totalAmount": 64.95,
+    "cashierName": "Bernice S. Sawal",
+    "paymentMethod": "credit"
+}
+

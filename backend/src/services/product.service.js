@@ -15,10 +15,11 @@ export const createProduct = (data) => {
   return Product.create(data);
 };
 
-// Update a product
+// PUT or UPDATE a product
 export const updateProductById = (id, updates) => {
   return Product.findByIdAndUpdate(id, updates, {
-    new: true,
-    runValidators: true,
+    new: true, // Return the updated document; default is false (returns original before update)
+    runValidators: true, // Run schema validators on update (not enabled by default)
+    upsert: true, // Create document if not found, using the same _id (update if exists, insert if not)
   });
 };

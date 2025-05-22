@@ -3,22 +3,18 @@ import { body } from 'express-validator';
 export const validateSale = [
   body('productId')
     .isMongoId()
-    .notEmpty()
-    .withMessage('Product ID is a valid Mongo ID'),
+    .withMessage('Product ID must be a valid Mongo ID'),
   body('priceAtSale')
     .toFloat()
     .isFloat({ gte: 0 })
-    .notEmpty()
     .withMessage('Price at sale is greater than or equal to 0'),
   body('quantity')
     .toFloat()
     .isFloat({ gte: 0 })
-    .notEmpty()
     .withMessage('Quantity is greater than or equal 0'),
   body('totalAmount')
     .toFloat()
     .isFloat({ gte: 0 })
-    .notEmpty()
     .withMessage('Total amount is greater than or equal 0'),
   body('paymentMethod')
     .customSanitizer((value) => {
@@ -29,6 +25,46 @@ export const validateSale = [
     })
     .isIn(['cash', 'credit', 'debit', 'paypal'])
     .withMessage('Payment method options are [cash, credit, debit, paypal]'),
+  body('cashierName')
+    .optional()
+    .isString()
+    .trim()
+    .notEmpty()
+    .withMessage('Cashier name cannot be empty if provided'),
+];
+
+export const validateSaleUpdate = [
+  body('priceAtSale')
+    .optional()
+    .toFloat()
+    .isFloat({ gte: 0 })
+    .withMessage('Price at sale must be a number greater than or equal to 0'),
+  body('quantity')
+    .optional()
+    .toFloat()
+    .isFloat({ gte: 0 })
+    .withMessage('Quantity is greater than or equal 0'),
+  body('totalAmount')
+    .optional()
+    .toFloat()
+    .isFloat({ gte: 0 })
+    .withMessage('Total amount is greater than or equal 0'),
+  body('paymentMethod')
+    .optional()
+    .customSanitizer((value) => {
+      if (value === undefined || value === null || value === '') {
+        return 'cash';
+      }
+      return value;
+    })
+    .isIn(['cash', 'credit', 'debit', 'paypal'])
+    .withMessage('Payment method options are [cash, credit, debit, paypal]'),
+  body('cashierName')
+    .optional()
+    .isString()
+    .trim()
+    .notEmpty()
+    .withMessage('Cashier name cannot be empty if provided'),
 ];
 
 // const salesSchema = new mongoose.Schema({
