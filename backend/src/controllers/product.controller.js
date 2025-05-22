@@ -40,9 +40,7 @@ export const getProductById = async (req, res) => {
     res.status(200).json(product);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ message: 'The product was not found', error: error.message });
+    res.status(500).json({ message: '  ', error: error.message });
   }
 };
 
@@ -61,7 +59,7 @@ export const postProduct = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      message: 'The product was not created',
+      message: 'An error occured while creating the product',
       error: error.message,
     });
   }
@@ -90,9 +88,10 @@ export const updateProduct = async (req, res) => {
     res.status(200).json(updatedProduct);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ message: 'The product was not found', error: error.message });
+    res.status(500).json({
+      message: 'An error occured while updating the product',
+      error: error.message,
+    });
   }
 };
 
@@ -115,8 +114,9 @@ export const deleteProduct = async (req, res) => {
     res.status(200).json(deletedProduct);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ message: 'The product was not found', error: error.message });
+    res.status(500).json({
+      message: 'An error occured while deleting the product',
+      error: error.message,
+    });
   }
 };

@@ -1,0 +1,374 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "simple-pos-api",
+    "version": "1.0.0",
+    "description": "A simple Point-of-Sale API with connection to two collections in MongoDB for product and sales, ready for frontend consumption"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "required": [
+          "name",
+          "sku",
+          "stock",
+          "category",
+          "supplier",
+          "createdAt"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "sku": {
+            "type": "number"
+          },
+          "stock": {
+            "type": "number"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "minimum": 0
+          },
+          "category": {
+            "type": "string"
+          },
+          "supplier": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Sale": {
+        "type": "object",
+        "required": [
+          "productId",
+          "priceAtSale",
+          "quantity",
+          "totalAmount",
+          "date",
+          "cashierName",
+          "paymentMethod"
+        ],
+        "properties": {
+          "productId": {
+            "type": "string",
+            "description": "MongoDB ObjectId reference to the Product"
+          },
+          "priceAtSale": {
+            "type": "number",
+            "minimum": 0
+          },
+          "quantity": {
+            "type": "number",
+            "minimum": 0
+          },
+          "totalAmount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date and time of the sale"
+          },
+          "cashierName": {
+            "type": "string",
+            "default": "unknown"
+          },
+          "paymentMethod": {
+            "type": "string",
+            "enum": [
+              "cash",
+              "credit",
+              "debit",
+              "paypal"
+            ],
+            "default": "cash"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/products": {
+      "get": {
+        "summary": "Get all products",
+        "responses": {
+          "200": {
+            "description": "A list of all products"
+          },
+          "500": {
+            "description": "An error occured while fetching products"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new product",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Product created"
+          },
+          "400": {
+            "description": "No product was created. Please check the request data"
+          },
+          "500": {
+            "description": "An error occured while creating the product"
+          }
+        }
+      }
+    },
+    "/api/products/{id}": {
+      "get": {
+        "summary": "Get a product by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique ID of the product"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The product with the specified ID"
+          },
+          "400": {
+            "description": "Invalid product ID format"
+          },
+          "404": {
+            "description": "Product not found"
+          },
+          "500": {
+            "description": "An error occured while fetching the product"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a product by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Sale"
+            },
+            "description": "The unique ID of the product"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Sale"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Product updated"
+          },
+          "400": {
+            "description": "Invalid product ID format"
+          },
+          "404": {
+            "description": "Product not found"
+          },
+          "500": {
+            "description": "An error occured while updating the product"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a product by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique ID of the product"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product deleted successfully"
+          },
+          "400": {
+            "description": "Invalid product ID format"
+          },
+          "404": {
+            "description": "Product not found"
+          },
+          "500": {
+            "description": "An error occured while deleting the product"
+          }
+        }
+      }
+    },
+    "/api/sales": {
+      "get": {
+        "summary": "Get all sales",
+        "responses": {
+          "200": {
+            "description": "A list of all sales"
+          },
+          "500": {
+            "description": "An error occured while fetching sales"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new sale",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Sale"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sale created"
+          },
+          "400": {
+            "description": "No sale was created. Please check the request data"
+          },
+          "500": {
+            "description": "An error occured while creating the sale"
+          }
+        }
+      }
+    },
+    "/api/sales/{id}": {
+      "get": {
+        "summary": "Get a sale by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique ID of the sale"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The sale with the specified ID"
+          },
+          "400": {
+            "description": "Invalid sale ID format"
+          },
+          "404": {
+            "description": "Sale not found"
+          },
+          "500": {
+            "description": "An error occured while fetching the sale"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a sale by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique ID of the sale"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Sale"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sale updated"
+          },
+          "400": {
+            "description": "Invalid sale ID format"
+          },
+          "404": {
+            "description": "Sale not found"
+          },
+          "500": {
+            "description": "An error occured while updating the sale"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a sale",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique ID of the sale"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sale deleted successfully"
+          },
+          "400": {
+            "description": "Invalid sale ID format"
+          },
+          "404": {
+            "description": "Sale not found"
+          },
+          "500": {
+            "description": "An error occured while deleting the sale"
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}

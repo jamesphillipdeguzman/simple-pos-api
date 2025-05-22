@@ -34,7 +34,6 @@ export const validateSale = [
     })
     .isIn(['cash', 'credit', 'debit', 'paypal'])
     .withMessage('Payment method options are [cash, credit, debit, paypal]'),
- 
 ];
 
 // {
@@ -81,7 +80,6 @@ export const validateSaleUpdate = [
     })
     .isIn(['cash', 'credit', 'debit', 'paypal'])
     .withMessage('Payment method options are [cash, credit, debit, paypal]'),
-
 ];
 
 // const salesSchema = new mongoose.Schema({

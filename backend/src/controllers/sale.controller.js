@@ -40,9 +40,10 @@ export const getSaleById = async (req, res) => {
     console.log(`GET /api/sales/${id} was called.`);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ message: 'The sale was not found', error: error.message });
+    res.status(500).json({
+      message: 'An error occured while fetching the sale',
+      error: error.message,
+    });
   }
 };
 
@@ -61,7 +62,7 @@ export const postSale = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      message: 'The sale was not created',
+      message: 'An error occured while creating the sale',
       error: error.message,
     });
   }
@@ -90,9 +91,10 @@ export const updateSale = async (req, res) => {
     res.status(200).json(updatedSale);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ message: 'The sale was not found', error: error.message });
+    res.status(500).json({
+      message: 'An error occured while updating the sale',
+      error: error.message,
+    });
   }
 };
 
@@ -115,8 +117,9 @@ export const deleteSale = async (req, res) => {
     res.status(200).json(deletedSale);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ message: 'The sale was not found', error: error.message });
+    res.status(500).json({
+      message: 'An error occured while deleting the sale',
+      error: error.message,
+    });
   }
 };

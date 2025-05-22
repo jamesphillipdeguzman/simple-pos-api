@@ -10,7 +10,8 @@
     "debug": "node --inspect-brk server.js",
     "format": "prettier --write .",
     "lint": "eslint .",
-    "lint-fix": "eslint . --fix"
+    "lint-fix": "eslint . --fix",
+    "generate-swagger": "node generate.swagger.js"
   },
   "keywords": [
     "node",
