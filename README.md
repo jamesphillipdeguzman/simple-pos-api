@@ -40,3 +40,7 @@ cd simple-pos-api
 npm install
 npm run server
 ```
+
+## Installation
+
+[🔗 https://simple-pos-api.onrender.com/](https://simple-pos-api.onrender.com/)
