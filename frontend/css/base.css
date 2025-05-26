@@ -1,0 +1,23 @@
+form {
+    max-width: 400px;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #f9f9f9;
+    font-family: Arial, sans-serif;
+}
+
+#productForm {
+    display: flex;
+    flex-direction: column;
+}
+
+#submitProduct {
+    height: 40px;
+}
+
+label {
+    height: 1rem;
+    margin-bottom: 1rem;
+}

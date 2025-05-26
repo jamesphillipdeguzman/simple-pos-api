@@ -9,6 +9,7 @@ import {
 
 import { validateSale } from '../middlewares/sale.validation.middleware.js';
 import { validate } from '../middlewares/validate.middleware.js';
+import { ensureAuth } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
@@ -24,7 +25,7 @@ const router = express.Router();
  *      500:
  *        description: An error occured while fetching sales
  */
-router.get('/', getSales);
+router.get('/', ensureAuth, getSales);
 
 // GET a sale by Id
 /**
@@ -73,7 +74,7 @@ router.get('/:id', getSaleById);
  *        description: An error occured while creating the sale
  *
  */
-router.post('/', validateSale, validate, postSale);
+router.post('/', ensureAuth, validateSale, validate, postSale);
 
 // PUT or UPDATE a sale
 /**

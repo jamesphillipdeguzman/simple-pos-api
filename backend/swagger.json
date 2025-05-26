@@ -93,12 +93,7 @@
           },
           "paymentMethod": {
             "type": "string",
-            "enum": [
-              "cash",
-              "credit",
-              "debit",
-              "paypal"
-            ],
+            "enum": ["cash", "credit", "debit", "paypal"],
             "default": "cash"
           }
         }
