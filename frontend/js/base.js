@@ -29,7 +29,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
     try {
       const productResponse = await fetch(
-        "http://127.0.0.1:3001/api/products",
+        // "http://127.0.0.1:3001/api/products",
+        "https://simple-pos-api.onrender.com/api/products",
         {
           method: "POST",
           headers: {
@@ -105,14 +106,18 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const saleResponse = await fetch("http://127.0.0.1:3001/api/sales", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // Send cookie like connect.sid
-        body: JSON.stringify(sale),
-      });
+      const saleResponse = await fetch(
+        // "http://127.0.0.1:3001/api/sales",
+        "https://simple-pos-api.onrender.com/api/sales",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", // Send cookie like connect.sid
+          body: JSON.stringify(sale),
+        }
+      );
 
       saleData = await saleResponse.json();
       if (!saleResponse.ok) {
