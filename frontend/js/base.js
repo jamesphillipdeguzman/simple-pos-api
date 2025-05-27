@@ -50,6 +50,16 @@ document.getElementById("productForm").addEventListener("submit", async (e) => {
   }
 });
 
+document.getElementById("quantity").addEventListener("input", () => {
+  const quantity = parseInt(document.getElementById("quantity").value);
+  const priceAtSale = parseFloat(document.getElementById("priceAtSale").value);
+  if (!isNaN(quantity) && !isNaN(priceAtSale)) {
+    document.getElementById("totalAmount").value = (
+      quantity * priceAtSale
+    ).toFixed(2);
+  }
+});
+
 document.getElementById("saleForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
