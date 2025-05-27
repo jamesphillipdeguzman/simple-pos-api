@@ -20,6 +20,12 @@ passport.use(
   ),
 );
 
+console.log('ENVIRON:', {
+  CLIENT_ORIGIN: process.env.CLIENT_ORIGIN,
+  SESSION_SECRET: !!process.env.SESSION_SECRET,
+  NODE_ENV: process.env.NODE_ENV,
+});
+
 //Serialize the user to store user data in the session (usually user ID)
 passport.serializeUser((user, done) => {
   done(null, user);
