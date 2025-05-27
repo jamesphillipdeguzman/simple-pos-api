@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import productRoutes from './src/routes/product.route.js';
@@ -7,6 +8,15 @@ import swaggerSpec from './src/docs/swagger.js';
 import session from 'express-session';
 import passport from './src/config/passport.config.js';
 import authRoutes from './src/routes/auth.route.js';
+
+// Load environment variables first
+dotenv.config();
+
+console.log('ENV:', {
+  CLIENT_ORIGIN: process.env.CLIENT_ORIGIN,
+  SESSION_SECRET: !!process.env.SESSION_SECRET,
+  NODE_ENV: process.env.NODE_ENV,
+});
 
 // Initialize an express app
 const app = express();
