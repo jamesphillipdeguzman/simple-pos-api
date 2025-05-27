@@ -54,19 +54,15 @@ router.get(
   '/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
-    // Instead of immediate redirect, send a simple HTML page that triggers redirect after a brief pause
-    // This gives browser time to process the set-cookie header
-
     res.send(`
       <html>
         <body>
+          <p>Login successful. Redirecting to app in a few seconds...</p>
           <script>
-            // Redirect to frontend after a slight delay
             setTimeout(() => {
               window.location.href = "${process.env.CLIENT_ORIGIN}";
-            }, 100);
+            }, 5000); // 5 seconds
           </script>
-          <p>Login successful, redirecting...</p>
         </body>
       </html>
     `);

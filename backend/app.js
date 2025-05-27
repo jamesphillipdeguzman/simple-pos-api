@@ -17,6 +17,7 @@ console.log('ENV:', {
   SESSION_SECRET: !!process.env.SESSION_SECRET,
   NODE_ENV: process.env.NODE_ENV,
 });
+console.log('Secure cookie:', process.env.NODE_ENV === 'production');
 
 // Initialize an express app
 const app = express();
@@ -36,6 +37,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Create Session
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       httpOnly: true,
+//       secure: false,
+//       //  process.env.NODE_ENV === 'production',
+//       // sameSite: 'none', // IMPORTANT: add this for cross-origin cookies, since my backend API is hosted by Render and frontend is hosted by Netlify
+//       maxAge: 1000 * 60 * 60, // 1 hour
+//     },
+//   }),
+// );
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -43,8 +58,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // True in production
-      sameSite: 'none', // IMPORTANT: add this for cross-origin cookies, since my backend API is hosted by Render and frontend is hosted by Netlify
+      secure: process.env.NODE_ENV === 'production', // true on Netlify + Render
+      sameSite: 'none', // required for cross-origin
       maxAge: 1000 * 60 * 60, // 1 hour
     },
   }),
