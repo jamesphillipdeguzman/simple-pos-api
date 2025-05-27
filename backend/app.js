@@ -6,6 +6,7 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './src/docs/swagger.js';
 import session from 'express-session';
 import passport from './src/config/passport.config.js';
+import authRoutes from './src/routes/auth.route.js';
 
 // Initialize an express app
 const app = express();
@@ -42,38 +43,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-//Serialize/Deserialize
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
-
-// Redirect user to Google for login
-app.get(
-  '/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] }),
-);
-
-app.get(
-  '/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
-  (req, res) => {
-    // Successful login
-    // res.redirect('/protected-or-dashboard');
-    // req.user contain Google profile
-    res.json({ message: 'Login successful', user: req.user.displayName });
-  },
-);
-
-app.get('/logout', (req, res) => {
-  req.logout(() => {
-    res.redirect('/');
-  });
-});
-
 // Server Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -82,7 +51,8 @@ app.get('/', (req, res) => {
   res.send('Welcome to Simple-POS-API by James De Guzman!');
 });
 
-// Mount routes at /api/products and /api/sales
+// Mount routes at /auth, /api/products, and /api/sales
+app.use('/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/sales', saleRoutes);
 

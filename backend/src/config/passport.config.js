@@ -2,8 +2,10 @@ import dotenv from 'dotenv';
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
+// Load environment variables first
 dotenv.config();
 
+// Configure GoogleStrategy using environment variables (e.g for Google OAuth Login)
 passport.use(
   new GoogleStrategy(
     {
@@ -17,5 +19,15 @@ passport.use(
     },
   ),
 );
+
+//Serialize the user to store user data in the session (usually user ID)
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+// Deserialize the user from the session using the stored data (e.g., user ID)
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
 
 export default passport;

@@ -1,5 +1,6 @@
 form {
-    max-width: 400px;
+    width: 50%;
+    max-width: 80vw;
     margin: 10px auto;
     padding: 10px;
     border: 1px solid #ccc;
@@ -8,16 +9,54 @@ form {
     font-family: Arial, sans-serif;
 }
 
-#productForm {
+h1, h2, p {
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.demo {
+    display: flex;
+    width: 80vw;
+    max-width: 100%;
+    gap: 2rem;
+    margin: 2rem auto;
+}
+
+.postForm {
     display: flex;
     flex-direction: column;
+    height: auto;
+}
+
+#saleForm {
+    display: none;
 }
 
 #submitProduct {
     height: 40px;
 }
 
+#paymentMethod {
+    margin-bottom: auto;
+}
+
 label {
     height: 1rem;
     margin-bottom: 1rem;
+}
+
+select, input {
+    height: 34px;
+}
+
+@media (max-width: 600px) {
+    .demo {
+        display: flex;
+        flex-direction: column;
+        width: 100vw;
+    }
+
+    form {
+        width: 90%;
+    }
 }

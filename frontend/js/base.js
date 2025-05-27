@@ -1,5 +1,7 @@
 document.getElementById("productForm").addEventListener("submit", async (e) => {
   e.preventDefault();
+  // First, create a product
+  let productData;
 
   const product = {
     name: document.getElementById("name").value,
@@ -11,8 +13,13 @@ document.getElementById("productForm").addEventListener("submit", async (e) => {
     supplier: document.getElementById("supplier").value,
   };
 
+  if (!product.name || isNaN(product.price) || isNaN(product.stock)) {
+    alert("Please fill all required product fields.");
+    return;
+  }
+
   try {
-    const response = await fetch("http://127.0.0.1:3001/api/products", {
+    const productResponse = await fetch("http://127.0.0.1:3001/api/product", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,15 +28,81 @@ document.getElementById("productForm").addEventListener("submit", async (e) => {
       body: JSON.stringify(product),
     });
 
-    const data = await response.json();
-    if (response.ok) {
-      alert("Product created successfully!");
-      console.log("Product created", data);
-    } else {
-      alert(`Error: ${data.message}`);
-      console.log(`Error: ${data.message}`);
+    productData = await productResponse.json();
+    if (!productResponse.ok) {
+      alert(`Error: ${productData.message}`);
+      console.log(`Error: ${productData.message}`);
+      return; // exit here to prevent sale creation if product creation failed...
     }
+
+    alert("Product created successfully!");
+    console.log("Product created", productData);
+
+    // Populate the Sale ID with the productData.id
+    document.getElementById("productId").value =
+      productData._id || productData.id;
+    // Show Sale Form here
+    document.getElementById("saleForm").style.display = "block";
+    // Reset the Product Form
+    document.getElementById("productForm").reset();
   } catch (error) {
     console.error("Error submitting product", error);
+  }
+});
+
+document.getElementById("saleForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  // Second, create the sale
+
+  let saleData;
+
+  const sale = {
+    productId: document.getElementById("productId").value,
+    priceAtSale: parseFloat(document.getElementById("priceAtSale").value),
+    quantity: parseInt(document.getElementById("quantity").value),
+    totalAmount: parseFloat(document.getElementById("totalAmount").value),
+    cashierName: document.getElementById("cashierName").value,
+    paymentMethod: document.getElementById("paymentMethod").value,
+  };
+
+  if (
+    !sale.cashierName ||
+    isNaN(sale.priceAtSale) ||
+    isNaN(sale.quantity) ||
+    isNaN(sale.totalAmount) ||
+    !sale.paymentMethod
+  ) {
+    alert("Please fill all required sale fields.");
+    return;
+  }
+
+  try {
+    const saleResponse = await fetch("http://127.0.0.1:3001/api/sale", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include", // Send cookie like connect.sid
+      body: JSON.stringify(sale),
+    });
+
+    saleData = await saleResponse.json();
+    if (!saleResponse.ok) {
+      alert(`Error: ${saleData.message}`);
+      console.log(`Error: ${saleData.message}`);
+      return;
+    }
+
+    alert("Sale created successfully!");
+    console.log("Sale created", saleData);
+
+    // Clear sale form
+    document.getElementById("saleForm").reset();
+
+    // Hide sale form after transaction
+    document.getElementById("saleForm").style.display = "none";
+  } catch (error) {
+    console.error("Error submitting sale", error);
   }
 });
