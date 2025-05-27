@@ -54,12 +54,22 @@ router.get(
   '/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
-    // Successful login
-    res.redirect(process.env.CLIENT_ORIGIN); // Ensure it redirects to frontend Netlify site so cookies can be created
-    // req.user contain Google profile
-    // res
-    //   .status(200)
-    //   .json({ message: 'Login successful', user: req.user.displayName });
+    // Instead of immediate redirect, send a simple HTML page that triggers redirect after a brief pause
+    // This gives browser time to process the set-cookie header
+
+    res.send(`
+      <html>
+        <body>
+          <script>
+            // Redirect to frontend after a slight delay
+            setTimeout(() => {
+              window.location.href = "${process.env.CLIENT_ORIGIN}";
+            }, 100);
+          </script>
+          <p>Login successful, redirecting...</p>
+        </body>
+      </html>
+    `);
   },
 );
 
