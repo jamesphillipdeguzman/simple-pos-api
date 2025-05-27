@@ -1,5 +1,9 @@
+import dotenv from 'dotenv';
 import express from 'express';
 import passport from 'passport';
+
+// Load environment variables
+dotenv.config();
 
 const router = express.Router();
 
@@ -51,11 +55,11 @@ router.get(
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
     // Successful login
-    // res.redirect('/protected-or-dashboard');
+    res.redirect(process.env.CLIENT_ORIGIN); // Ensure it redirects to frontend Netlify site so cookies can be created
     // req.user contain Google profile
-    res
-      .status(200)
-      .json({ message: 'Login successful', user: req.user.displayName });
+    // res
+    //   .status(200)
+    //   .json({ message: 'Login successful', user: req.user.displayName });
   },
 );
 
