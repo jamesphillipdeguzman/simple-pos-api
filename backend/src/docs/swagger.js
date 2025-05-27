@@ -15,8 +15,20 @@ const options = {
         url: 'https://simple-pos-api.onrender.com/',
       },
       {
-        url: 'http://localhost:3001',
+        url: 'http://127.0.0.1:3001',
       },
+    ],
+    tags: [
+      {
+        name: 'Authentication',
+        description:
+          'Google OAuth login/logout routes (DISCLAIMER: For documentation only, NOT for testing)',
+      },
+      {
+        name: 'Products',
+        description: 'Product management routes (FOR TESTING)',
+      },
+      { name: 'Sales', description: 'Sale tracking routes (FOR TESTING)' },
     ],
     components: components,
   },

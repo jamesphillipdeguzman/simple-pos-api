@@ -4,5 +4,5 @@ export const ensureAuth = (req, res, next) => {
   }
   res
     .status(401)
-    .json({ message: 'You are not authorized to view this resource' });
+    .json({ message: 'You are not authorized to view or use this resource' });
 };

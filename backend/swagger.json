@@ -10,7 +10,21 @@
       "url": "https://simple-pos-api.onrender.com/"
     },
     {
-      "url": "http://localhost:3001"
+      "url": "http://127.0.0.1:3001"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "Google OAuth login/logout routes (DISCLAIMER: For documentation only, NOT for testing)"
+    },
+    {
+      "name": "Products",
+      "description": "Product management routes (FOR TESTING)"
+    },
+    {
+      "name": "Sales",
+      "description": "Sale tracking routes (FOR TESTING)"
     }
   ],
   "components": {
@@ -93,7 +107,12 @@
           },
           "paymentMethod": {
             "type": "string",
-            "enum": ["cash", "credit", "debit", "paypal"],
+            "enum": [
+              "cash",
+              "credit",
+              "debit",
+              "paypal"
+            ],
             "default": "cash"
           }
         }
@@ -101,9 +120,71 @@
     }
   },
   "paths": {
+    "/auth/google": {
+      "get": {
+        "summary": "Redirect user to Google OAuth for login",
+        "tags": [
+          "Authentication"
+        ],
+        "responses": {
+          "302": {
+            "description": "Initiates Google OAuth login. This redirect flow works only in a browser, not via Swagger \"Try it out\"."
+          }
+        }
+      }
+    },
+    "/auth/google/callback": {
+      "get": {
+        "summary": "Google OAuth callback url for login",
+        "tags": [
+          "Authentication"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful login, returns user profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Login successful"
+                    },
+                    "user": {
+                      "type": "string",
+                      "example": "James Phillip De Guzman"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "302": {
+            "description": "Redirect if login fails"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "summary": "Logs out the current user and redirects to home",
+        "tags": [
+          "Authentication"
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirects to homepage after logout"
+          }
+        }
+      }
+    },
     "/api/products": {
       "get": {
         "summary": "Get all products",
+        "tags": [
+          "Products"
+        ],
         "responses": {
           "200": {
             "description": "A list of all products"
@@ -125,6 +206,9 @@
             }
           }
         },
+        "tags": [
+          "Products"
+        ],
         "responses": {
           "201": {
             "description": "Product created"
@@ -151,6 +235,9 @@
             },
             "description": "The unique ID of the product"
           }
+        ],
+        "tags": [
+          "Products"
         ],
         "responses": {
           "200": {
@@ -190,6 +277,9 @@
             }
           }
         },
+        "tags": [
+          "Products"
+        ],
         "responses": {
           "200": {
             "description": "Product updated"
@@ -218,6 +308,9 @@
             "description": "The unique ID of the product"
           }
         ],
+        "tags": [
+          "Products"
+        ],
         "responses": {
           "200": {
             "description": "Product deleted successfully"
@@ -237,6 +330,9 @@
     "/api/sales": {
       "get": {
         "summary": "Get all sales",
+        "tags": [
+          "Sales"
+        ],
         "responses": {
           "200": {
             "description": "A list of all sales"
@@ -258,6 +354,9 @@
             }
           }
         },
+        "tags": [
+          "Sales"
+        ],
         "responses": {
           "201": {
             "description": "Sale created"
@@ -284,6 +383,9 @@
             },
             "description": "The unique ID of the sale"
           }
+        ],
+        "tags": [
+          "Sales"
         ],
         "responses": {
           "200": {
@@ -323,6 +425,9 @@
             }
           }
         },
+        "tags": [
+          "Sales"
+        ],
         "responses": {
           "200": {
             "description": "Sale updated"
@@ -351,6 +456,9 @@
             "description": "The unique ID of the sale"
           }
         ],
+        "tags": [
+          "Sales"
+        ],
         "responses": {
           "200": {
             "description": "Sale deleted successfully"
@@ -367,6 +475,5 @@
         }
       }
     }
-  },
-  "tags": []
+  }
 }

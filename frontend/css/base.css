@@ -22,11 +22,6 @@ h1, h2, p {
     margin: 2rem auto;
 }
 
-.postForm {
-    display: flex;
-    flex-direction: column;
-    height: auto;
-}
 
 #saleForm {
     display: none;
@@ -40,13 +35,25 @@ h1, h2, p {
     margin-bottom: auto;
 }
 
-label {
-    height: 1rem;
-    margin-bottom: 1rem;
+.postForm {
+    display: flex;
+    flex-direction: column;
+    height: auto;
 }
 
-select, input {
-    height: 34px;
+.postForm input,
+.postForm textarea,
+.postForm select {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+
+label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    display: block;
 }
 
 @media (max-width: 600px) {

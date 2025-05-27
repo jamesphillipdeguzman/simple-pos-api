@@ -19,6 +19,8 @@ const router = express.Router();
  * /api/products:
  *  get:
  *    summary: Get all products
+ *    tags:
+ *      - Products
  *    responses:
  *      200:
  *        description: A list of all products
@@ -40,6 +42,8 @@ router.get('/', ensureAuth, getProducts);
  *        schema:
  *          type: string
  *        description: The unique ID of the product
+ *    tags:
+ *      - Products
  *    responses:
  *      200:
  *        description: The product with the specified ID
@@ -65,6 +69,8 @@ router.get('/:id', getProductById);
  *        application/json:
  *          schema:
  *            $ref: '#/components/schemas/Product'
+ *    tags:
+ *      - Products
  *    responses:
  *      201:
  *        description: Product created
@@ -95,6 +101,8 @@ router.post('/', ensureAuth, validateProduct, validate, postProduct);
  *        application/json:
  *          schema:
  *           $ref: '#/components/schemas/Product'
+ *    tags:
+ *      - Products
  *    responses:
  *      200:
  *        description: Product updated
@@ -121,6 +129,8 @@ router.put('/:id', validateProduct, validate, updateProduct);
  *        schema:
  *          type: string
  *        description: The unique ID of the product
+ *    tags:
+ *      - Products
  *    responses:
  *      200:
  *        description: Product deleted successfully

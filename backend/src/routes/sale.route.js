@@ -19,6 +19,8 @@ const router = express.Router();
  * /api/sales:
  *  get:
  *    summary: Get all sales
+ *    tags:
+ *      - Sales
  *    responses:
  *      200:
  *        description: A list of all sales
@@ -40,6 +42,8 @@ router.get('/', ensureAuth, getSales);
  *        schema:
  *          type: string
  *        description: The unique ID of the sale
+ *    tags:
+ *      - Sales
  *    responses:
  *      200:
  *        description: The sale with the specified ID
@@ -65,6 +69,8 @@ router.get('/:id', getSaleById);
  *        application/json:
  *          schema:
  *           $ref: '#/components/schemas/Sale'
+ *    tags:
+ *      - Sales
  *    responses:
  *      201:
  *        description: Sale created
@@ -95,6 +101,8 @@ router.post('/', ensureAuth, validateSale, validate, postSale);
  *        application/json:
  *          schema:
  *            $ref: '#/components/schemas/Sale'
+ *    tags:
+ *      - Sales
  *    responses:
  *      200:
  *        description: Sale updated
@@ -121,6 +129,8 @@ router.put('/:id', validateSale, validate, updateSale);
  *        schema:
  *          type: string
  *        description: The unique ID of the sale
+ *    tags:
+ *      - Sales
  *    responses:
  *      200:
  *        description: Sale deleted successfully
