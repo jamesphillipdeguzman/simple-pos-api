@@ -34,6 +34,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // True in production
+      sameSite: 'none', // IMPORTANT: add this for cross-origin cookies, since my backend API is hosted by Render and frontend is hosted by Netlify
       maxAge: 1000 * 60 * 60, // 1 hour
     },
   }),
