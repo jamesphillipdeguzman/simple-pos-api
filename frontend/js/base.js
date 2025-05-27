@@ -19,7 +19,7 @@ document.getElementById("productForm").addEventListener("submit", async (e) => {
   }
 
   try {
-    const productResponse = await fetch("http://127.0.0.1:3001/api/product", {
+    const productResponse = await fetch("http://127.0.0.1:3001/api/products", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -88,7 +88,7 @@ document.getElementById("saleForm").addEventListener("submit", async (e) => {
   }
 
   try {
-    const saleResponse = await fetch("http://127.0.0.1:3001/api/sale", {
+    const saleResponse = await fetch("http://127.0.0.1:3001/api/sales", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

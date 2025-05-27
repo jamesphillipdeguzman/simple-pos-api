@@ -52,7 +52,7 @@ app.get('/', (req, res) => {
 });
 
 // Mount routes at /auth, /api/products, and /api/sales
-app.use('/auth', authRoutes);
+app.use('/', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/sales', saleRoutes);
 
