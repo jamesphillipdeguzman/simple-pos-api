@@ -1,4 +1,6 @@
 import dotenv from 'dotenv';
+// Load environment variables first
+dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import productRoutes from './src/routes/product.route.js';
@@ -8,9 +10,6 @@ import swaggerSpec from './src/docs/swagger.js';
 import session from 'express-session';
 import passport from './src/config/passport.config.js';
 import authRoutes from './src/routes/auth.route.js';
-
-// Load environment variables first
-dotenv.config();
 
 console.log('ENV:', {
   CLIENT_ORIGIN: process.env.CLIENT_ORIGIN,
@@ -58,7 +57,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // true on Netlify + Render
+      //secure: process.env.NODE_ENV === 'production', // true on Netlify + Render
+      secure: true,
       sameSite: 'none', // required for cross-origin
       maxAge: 1000 * 60 * 60, // 1 hour
     },
