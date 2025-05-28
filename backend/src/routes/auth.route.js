@@ -17,13 +17,13 @@ const router = express.Router();
  *       - Authentication
  *     responses:
  *       302:
- *         description: Initiates Google OAuth login. This redirect flow works only in a browser, not via Swagger "Try it out".
+ *         description: Initiates Google OAuth login (Pop-up based). This redirect flow works only in a browser, not via Swagger "Try it out".
  */
 router.get(
   '/auth/google',
   passport.authenticate('google', {
     scope: ['profile', 'email'],
-    prompt: 'select_account' // Force Google to show account selector
+    prompt: 'select_account', // Force Google to show account selector
   }),
 );
 
@@ -37,18 +37,12 @@ router.get(
  *       - Authentication
  *     responses:
  *       200:
- *         description: Successful login, returns user profile
+ *         description: Successful login, send user data back via postMessage
  *         content:
- *           application/json:
+ *           text/html:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Login successful
- *                 user:
- *                   type: string
- *                   example: James Phillip De Guzman
+ *               type: string
+ *               example: <script>window.opener.postMessage(...)</script>
  *       302:
  *         description: Redirect if login fails
  *
@@ -85,10 +79,36 @@ router.get(
 );
 
 // Add a route to check authentication status
+/**
+ * @swagger
+ * /auth/status:
+ *   get:
+ *     summary: Check the current authentication status
+ *     description: Returns whether the user is currently authenticated and includes user profile if logged in
+ *     tags:
+ *       - Authentication
+ *     responses:
+ *       200:
+ *         description: Returns auth status and user data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 authenticated:
+ *                   type: boolean
+ *                   example: true
+ *                 user:
+ *                   displayName: James Phillip De Guzman
+ *                   emails:
+ *                     - value: jamesphillipdeguzman@gmail.com
+ *
+ *
+ */
 router.get('/auth/status', (req, res) => {
   res.json({
     authenticated: req.isAuthenticated(),
-    user: req.user || null
+    user: req.user || null,
   });
 });
 
@@ -111,6 +131,25 @@ router.get('/logout', (req, res) => {
   });
 });
 
+// Test if able to set-cookie
+/**
+ * @swagger
+ * /set-cookie:
+ *   get:
+ *     summary: Set a secure, test cookie
+ *     description: Useful for debugging cookie behavior (e.g., Secure + SameSite=None)
+ *     tags:
+ *       - Development
+ *     responses:
+ *       200:
+ *         description: Cookie set successfully
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: Cookie set
+ *
+ */
 router.get('/set-cookie', (req, res) => {
   res.cookie('test', 'cookie-value', {
     httpOnly: true,

@@ -107,7 +107,12 @@
           },
           "paymentMethod": {
             "type": "string",
-            "enum": ["cash", "credit", "debit", "paypal"],
+            "enum": [
+              "cash",
+              "credit",
+              "debit",
+              "paypal"
+            ],
             "default": "cash"
           }
         }
@@ -118,10 +123,12 @@
     "/auth/google": {
       "get": {
         "summary": "Redirect user to Google OAuth for login",
-        "tags": ["Authentication"],
+        "tags": [
+          "Authentication"
+        ],
         "responses": {
           "302": {
-            "description": "Initiates Google OAuth login. This redirect flow works only in a browser, not via Swagger \"Try it out\"."
+            "description": "Initiates Google OAuth login (Pop-up based). This redirect flow works only in a browser, not via Swagger \"Try it out\"."
           }
         }
       }
@@ -129,24 +136,17 @@
     "/auth/google/callback": {
       "get": {
         "summary": "Google OAuth callback url for login",
-        "tags": ["Authentication"],
+        "tags": [
+          "Authentication"
+        ],
         "responses": {
           "200": {
-            "description": "Successful login, returns user profile",
+            "description": "Successful login, send user data back via postMessage",
             "content": {
-              "application/json": {
+              "text/html": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Login successful"
-                    },
-                    "user": {
-                      "type": "string",
-                      "example": "James Phillip De Guzman"
-                    }
-                  }
+                  "type": "string",
+                  "example": "<script>window.opener.postMessage(...)</script>"
                 }
               }
             }
@@ -157,10 +157,47 @@
         }
       }
     },
+    "/auth/status": {
+      "get": {
+        "summary": "Check the current authentication status",
+        "description": "Returns whether the user is currently authenticated and includes user profile if logged in",
+        "tags": [
+          "Authentication"
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns auth status and user data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "authenticated": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "user": {
+                      "displayName": "James Phillip De Guzman",
+                      "emails": [
+                        {
+                          "value": "jamesphillipdeguzman@gmail.com"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/logout": {
       "get": {
         "summary": "Logs out the current user and redirects to home",
-        "tags": ["Authentication"],
+        "tags": [
+          "Authentication"
+        ],
         "responses": {
           "302": {
             "description": "Redirects to homepage after logout"
@@ -168,10 +205,34 @@
         }
       }
     },
+    "/set-cookie": {
+      "get": {
+        "summary": "Set a secure, test cookie",
+        "description": "Useful for debugging cookie behavior (e.g., Secure + SameSite=None)",
+        "tags": [
+          "Development"
+        ],
+        "responses": {
+          "200": {
+            "description": "Cookie set successfully",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Cookie set"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/products": {
       "get": {
         "summary": "Get all products",
-        "tags": ["Products"],
+        "tags": [
+          "Products"
+        ],
         "responses": {
           "200": {
             "description": "A list of all products"
@@ -193,7 +254,9 @@
             }
           }
         },
-        "tags": ["Products"],
+        "tags": [
+          "Products"
+        ],
         "responses": {
           "201": {
             "description": "Product created"
@@ -221,7 +284,9 @@
             "description": "The unique ID of the product"
           }
         ],
-        "tags": ["Products"],
+        "tags": [
+          "Products"
+        ],
         "responses": {
           "200": {
             "description": "The product with the specified ID"
@@ -260,7 +325,9 @@
             }
           }
         },
-        "tags": ["Products"],
+        "tags": [
+          "Products"
+        ],
         "responses": {
           "200": {
             "description": "Product updated"
@@ -289,7 +356,9 @@
             "description": "The unique ID of the product"
           }
         ],
-        "tags": ["Products"],
+        "tags": [
+          "Products"
+        ],
         "responses": {
           "200": {
             "description": "Product deleted successfully"
@@ -309,7 +378,9 @@
     "/api/sales": {
       "get": {
         "summary": "Get all sales",
-        "tags": ["Sales"],
+        "tags": [
+          "Sales"
+        ],
         "responses": {
           "200": {
             "description": "A list of all sales"
@@ -331,7 +402,9 @@
             }
           }
         },
-        "tags": ["Sales"],
+        "tags": [
+          "Sales"
+        ],
         "responses": {
           "201": {
             "description": "Sale created"
@@ -359,7 +432,9 @@
             "description": "The unique ID of the sale"
           }
         ],
-        "tags": ["Sales"],
+        "tags": [
+          "Sales"
+        ],
         "responses": {
           "200": {
             "description": "The sale with the specified ID"
@@ -398,7 +473,9 @@
             }
           }
         },
-        "tags": ["Sales"],
+        "tags": [
+          "Sales"
+        ],
         "responses": {
           "200": {
             "description": "Sale updated"
@@ -427,7 +504,9 @@
             "description": "The unique ID of the sale"
           }
         ],
-        "tags": ["Sales"],
+        "tags": [
+          "Sales"
+        ],
         "responses": {
           "200": {
             "description": "Sale deleted successfully"
