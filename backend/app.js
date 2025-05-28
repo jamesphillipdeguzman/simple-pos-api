@@ -26,6 +26,8 @@ app.use(
   cors({
     origin: process.env.CLIENT_ORIGIN || 'http://127.0.0.1:3000',
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   }),
 );
 
@@ -36,20 +38,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Create Session
-// app.use(
-//   session({
-//     secret: process.env.SESSION_SECRET,
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {
-//       httpOnly: true,
-//       secure: false,
-//       //  process.env.NODE_ENV === 'production',
-//       // sameSite: 'none', // IMPORTANT: add this for cross-origin cookies, since my backend API is hosted by Render and frontend is hosted by Netlify
-//       maxAge: 1000 * 60 * 60, // 1 hour
-//     },
-//   }),
-// );
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -57,13 +45,22 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      //secure: process.env.NODE_ENV === 'production', // true on Netlify + Render
-      secure: true,
-      sameSite: 'none', // required for cross-origin
+      secure: true, // Required for HTTPS
+      sameSite: 'none', // Required for cross-origin
       maxAge: 1000 * 60 * 60, // 1 hour
     },
+    proxy: true, // Required for secure cookies behind a proxy
   }),
 );
+
+// Add debug logging
+app.use((req, res, next) => {
+  console.log('Request Origin:', req.headers.origin);
+  console.log('Session:', req.session);
+  console.log('Session ID:', req.sessionID);
+  console.log('Cookies:', req.cookies);
+  next();
+});
 
 // Initialize Passport
 app.use(passport.initialize());

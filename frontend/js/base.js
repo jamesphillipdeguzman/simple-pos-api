@@ -36,8 +36,10 @@ window.addEventListener("DOMContentLoaded", () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Accept": "application/json",
           },
-          credentials: "include", // Send cookie like connect.sid
+          credentials: "include", // Required for cookies
+          mode: "cors", // Explicitly set CORS mode
           body: JSON.stringify(product),
         }
       );
@@ -115,8 +117,10 @@ window.addEventListener("DOMContentLoaded", () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Accept": "application/json",
           },
-          credentials: "include", // Send cookie like connect.sid
+          credentials: "include", // Required for cookies
+          mode: "cors", // Explicitly set CORS mode
           body: JSON.stringify(sale),
         }
       );
