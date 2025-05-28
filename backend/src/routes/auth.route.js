@@ -54,21 +54,21 @@ router.get(
   '/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
-    // res.send(`
-    //   <html>
-    //     <body>
-    //       <p>Login successful. Redirecting to app in a few seconds...</p>
-    //       <script>
-    //         setTimeout(() => {
-    //           window.location.href = "${process.env.CLIENT_ORIGIN}";
-    //         }, 5000); // 5 seconds
-    //       </script>
-    //     </body>
-    //   </html>
-    // `);
-    res
-      .status(200)
-      .json({ message: 'Login successful', user: req.user.displayName });
+    res.send(`
+      <html>
+        <body>
+          <p>Login successful. Redirecting to app in a few seconds...</p>
+          <script>
+            setTimeout(() => {
+              window.location.href = "${process.env.CLIENT_ORIGIN}";
+            }, 5000); // 5 seconds
+          </script>
+        </body>
+      </html>
+    `);
+    // res
+    //   .status(200)
+    //   .json({ message: 'Login successful', user: req.user.displayName });
   },
 );
 
