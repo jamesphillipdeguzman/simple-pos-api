@@ -21,7 +21,10 @@ const router = express.Router();
  */
 router.get(
   '/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] }),
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    prompt: 'select_account' // Force Google to show account selector
+  }),
 );
 
 // Handle the OAuth callback
@@ -59,10 +62,35 @@ router.get(
     console.log('Google callback - Session ID:', req.sessionID);
     console.log('Google callback - Cookies:', req.cookies);
 
-    // Redirect to frontend
-    res.redirect(process.env.CLIENT_ORIGIN);
+    // Send HTML that will communicate with the opener window
+    res.send(`
+      <html>
+        <body>
+          <script>
+            // Send message to opener window
+            if (window.opener) {
+              window.opener.postMessage({
+                type: 'GOOGLE_AUTH_SUCCESS',
+                user: ${JSON.stringify(req.user)}
+              }, '${process.env.CLIENT_ORIGIN}');
+              window.close();
+            } else {
+              window.location.href = '${process.env.CLIENT_ORIGIN}';
+            }
+          </script>
+        </body>
+      </html>
+    `);
   },
 );
+
+// Add a route to check authentication status
+router.get('/auth/status', (req, res) => {
+  res.json({
+    authenticated: req.isAuthenticated(),
+    user: req.user || null
+  });
+});
 
 // Logout user and go back to Welcome message for my backend API
 /**

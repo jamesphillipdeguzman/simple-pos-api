@@ -2,85 +2,94 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>simple-pos-api</title>
-    <link rel="stylesheet" href="./css/base.css">
-    <script src="./js/base.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple POS System</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
+    <header>
+        <h1>Simple POS System</h1>
+        <div id="authContainer">
+            <button id="loginButton" class="auth-button">Login with Google</button>
+            <span id="userInfo" style="display: none;"></span>
+            <button id="logoutButton" class="auth-button" style="display: none;">Logout</button>
+        </div>
+    </header>
 
-    <h1>Frontend / Backend Demo (simple-pos-api) </h1>
-    <p> POST Method Test for Product & Sale Collections in MongoDB </p>
-    <div class="demo">
+    <main>
+        <h1>Frontend / Backend Demo (simple-pos-api) </h1>
+        <p> POST Method Test for Product & Sale Collections in MongoDB </p>
+        <div class="demo">
 
-        <!-- Create Product Form -->
-        <form id="productForm" class="postForm">
-            <h2> Create Product </h2>
-            <label for="name">Product Name:</label>
-            <input type="text" id="name" name="name" required><br>
+            <!-- Create Product Form -->
+            <form id="productForm" class="postForm">
+                <h2> Create Product </h2>
+                <label for="name">Product Name:</label>
+                <input type="text" id="name" name="name" required><br>
 
-            <label for="sku">SKU:</label>
-            <input type="number" id="sku" name="sku" required><br>
+                <label for="sku">SKU:</label>
+                <input type="number" id="sku" name="sku" required><br>
 
-            <label for="stock">Stock:</label>
-            <input type="number" id="stock" name="stock" required><br>
+                <label for="stock">Stock:</label>
+                <input type="number" id="stock" name="stock" required><br>
 
-            <label for="description">Description:</label>
-            <textarea id="description" name="description" required></textarea><br>
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required></textarea><br>
 
-            <label for="price">Price:</label>
-            <input type="number" id="price" name="price" step="0.01" required><br>
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" step="0.01" required><br>
 
-            <label for="category">Category:</label>
-            <select id="category" name="category" required>
-                <option value="">--Select category--</option>
-                <option value="Monitors">Monitors</option>
-                <option value="Electronics">Electronics</option>
-                <option value="Electronics Accessories">Electronics Accessories</option>
-                <option value="Other">Other</option>
-            </select><br>
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    <option value="">--Select category--</option>
+                    <option value="Monitors">Monitors</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Electronics Accessories">Electronics Accessories</option>
+                    <option value="Other">Other</option>
+                </select><br>
 
-            <label for="supplier">Supplier</label>
-            <input type="text" id="supplier" name="supplier"><br>
+                <label for="supplier">Supplier</label>
+                <input type="text" id="supplier" name="supplier"><br>
 
-            <button id="submitProduct">Submit Product</button>
-        </form>
+                <button id="submitProduct">Submit Product</button>
+            </form>
 
-        <!-- Create Sale Form -->
-        <form id="saleForm" class="postForm">
-            <h2> Create Sale </h2>
-            <label for="productId">Product ID:</label>
-            <input type="text" id="productId" name="productId" required><br>
+            <!-- Create Sale Form -->
+            <form id="saleForm" class="postForm">
+                <h2> Create Sale </h2>
+                <label for="productId">Product ID:</label>
+                <input type="text" id="productId" name="productId" required><br>
 
-            <label for="priceAtSale">Price at Sale:</label>
-            <input type="number" id="priceAtSale" name="priceAtSale" step="0.01" required><br>
+                <label for="priceAtSale">Price at Sale:</label>
+                <input type="number" id="priceAtSale" name="priceAtSale" step="0.01" required><br>
 
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" step="1" required><br>
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" step="1" required><br>
 
-            <label for="totalAmount">Total Amount:</label>
-            <input type="number" id="totalAmount" name="totalAmount" step="0.01" required><br>
+                <label for="totalAmount">Total Amount:</label>
+                <input type="number" id="totalAmount" name="totalAmount" step="0.01" required><br>
 
-            <label for="cashierName">Cashier Name:</label>
-            <input type="text" id="cashierName" name="cashierName" required><br>
+                <label for="cashierName">Cashier Name:</label>
+                <input type="text" id="cashierName" name="cashierName" required><br>
 
-            <label for="paymentMethod">Payment Method:</label>
-            <select id="paymentMethod" name="paymentMethod" required>
-                <option value="">--Select payment--</option>
-                <option value="cash">cash</option>
-                <option value="credit">credit</option>
-                <option value="debit">debit</option>
-                <option value="paypal">paypal</option>
-            </select><br>
+                <label for="paymentMethod">Payment Method:</label>
+                <select id="paymentMethod" name="paymentMethod" required>
+                    <option value="">--Select payment--</option>
+                    <option value="cash">cash</option>
+                    <option value="credit">credit</option>
+                    <option value="debit">debit</option>
+                    <option value="paypal">paypal</option>
+                </select><br>
 
-            <button id="submitProduct">Submit Sale</button>
-        </form>
-    </div>
+                <button id="submitProduct">Submit Sale</button>
+            </form>
+        </div>
+    </main>
 
-
+    <script src="js/auth.js"></script>
+    <script src="js/base.js"></script>
 </body>
 
 </html>
