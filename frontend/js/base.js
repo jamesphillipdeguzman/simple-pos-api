@@ -4,14 +4,26 @@ window.addEventListener("DOMContentLoaded", () => {
   let productData;
   let saleData;
 
+  // Check if user is authenticated before allowing form submissions
+  function checkAuthAndSubmit(e, formType) {
+    if (!authState.isAuthenticated) {
+      e.preventDefault();
+      alert('Please login first to create products or sales');
+      return false;
+    }
+    return true;
+  }
+
   productForm = document.getElementById("productForm");
   saleForm = document.getElementById("saleForm");
 
   productForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // First, create a product
+    // Check authentication
+    if (!checkAuthAndSubmit(e, 'product')) return;
 
+    // First, create a product
     const product = {
       name: document.getElementById("name").value,
       sku: parseInt(document.getElementById("sku").value),
@@ -29,26 +41,30 @@ window.addEventListener("DOMContentLoaded", () => {
 
     try {
       const productResponse = await fetch(
-        // "http://127.0.0.1:3001/api/products",
-        // "https://simple-pos-api.onrender.com/api/products",
-        "/api/products",
+        "https://simple-pos-api.onrender.com/api/products",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
           },
-          credentials: "include", // Required for cookies
-          mode: "cors", // Explicitly set CORS mode
+          credentials: "include",
+          mode: "cors",
           body: JSON.stringify(product),
         }
       );
 
       productData = await productResponse.json();
       if (!productResponse.ok) {
+        if (productResponse.status === 401) {
+          alert('Your session has expired. Please login again.');
+          authState.isAuthenticated = false;
+          updateAuthUI();
+          return;
+        }
         alert(`Error: ${productData.message}`);
         console.log(`Error: ${productData.message}`);
-        return; // exit here to prevent sale creation if product creation failed...
+        return;
       }
 
       alert("Product created successfully!");
@@ -67,6 +83,7 @@ window.addEventListener("DOMContentLoaded", () => {
         productData.price.toFixed(2);
     } catch (error) {
       console.error("Error submitting product", error);
+      alert("Error creating product. Please try again.");
     }
   });
 
@@ -86,8 +103,10 @@ window.addEventListener("DOMContentLoaded", () => {
   saleForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Second, create the sale
+    // Check authentication
+    if (!checkAuthAndSubmit(e, 'sale')) return;
 
+    // Second, create the sale
     const sale = {
       productId: document.getElementById("productId").value,
       priceAtSale: parseFloat(document.getElementById("priceAtSale").value),
@@ -110,23 +129,27 @@ window.addEventListener("DOMContentLoaded", () => {
 
     try {
       const saleResponse = await fetch(
-        // "http://127.0.0.1:3001/api/sales",
-        // "https://simple-pos-api.onrender.com/api/sales",
-        "/api/sales",
+        "https://simple-pos-api.onrender.com/api/sales",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
           },
-          credentials: "include", // Required for cookies
-          mode: "cors", // Explicitly set CORS mode
+          credentials: "include",
+          mode: "cors",
           body: JSON.stringify(sale),
         }
       );
 
       saleData = await saleResponse.json();
       if (!saleResponse.ok) {
+        if (saleResponse.status === 401) {
+          alert('Your session has expired. Please login again.');
+          authState.isAuthenticated = false;
+          updateAuthUI();
+          return;
+        }
         alert(`Error: ${saleData.message}`);
         console.log(`Error: ${saleData.message}`);
         return;
@@ -141,6 +164,7 @@ window.addEventListener("DOMContentLoaded", () => {
       productForm.reset();
     } catch (error) {
       console.error("Error submitting sale", error);
+      alert("Error creating sale. Please try again.");
     }
   });
 });
