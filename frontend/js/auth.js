@@ -1,3 +1,5 @@
+
+// AI Helped with this script
 // Auth state
 let authState = {
     isAuthenticated: false,
