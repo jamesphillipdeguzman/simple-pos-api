@@ -45,7 +45,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: true, // Required for HTTPS
+      secure: process.env.NODE_ENV === 'production', // Required for HTTPS. Evaluates to true for production
       sameSite: 'none', // Required for cross-origin
       maxAge: 1000 * 60 * 60, // 1 hour
     },
