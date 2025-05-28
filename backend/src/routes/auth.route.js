@@ -54,7 +54,19 @@ router.get(
   '/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
-    res.redirect(process.env.CLIENT_ORIGIN);
+    res.send(`
+  <html>
+    <body>
+      <p>Login successful. Redirecting to app in a few seconds...</p>
+      <script>
+        setTimeout(() => {
+          window.location.href = "${process.env.CLIENT_ORIGIN}";
+        }, 3000); // 3 seconds delay
+      </script>
+    </body>
+  </html>
+`);
+    // res.redirect(process.env.CLIENT_ORIGIN);
 
     // res.send(`
     //   <html>
@@ -91,6 +103,16 @@ router.get('/logout', (req, res) => {
   req.logout(() => {
     res.redirect('/');
   });
+});
+
+router.get('/set-cookie', (req, res) => {
+  res.cookie('test', 'cookie-value', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    maxAge: 60000,
+  });
+  res.send('Cookie set');
 });
 
 export default router;
