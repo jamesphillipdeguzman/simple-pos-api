@@ -67,4 +67,4 @@ Content-Type: application/json
 # }
 
 ### DELETE a product
-DELETE http://localhost:3001/api/products/682ead2830f847ef9d771805
+DELETE http://localhost:3001/api/products/68369152b24aef4159437ccc

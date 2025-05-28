@@ -110,4 +110,9 @@ header h1 {
     form {
         width: 90%;
     }
+
+    header {
+        display: flex;
+        flex-direction: column;
+    }
 }
