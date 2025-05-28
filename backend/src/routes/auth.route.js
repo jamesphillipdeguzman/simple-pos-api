@@ -54,35 +54,13 @@ router.get(
   '/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
-    res.send(`
-  <html>
-    <body>
-      <p>Login successful. Redirecting to app in a few seconds...</p>
-      <script>
-        setTimeout(() => {
-          window.location.href = "${process.env.CLIENT_ORIGIN}";
-        }, 3000); // 3 seconds delay
-      </script>
-    </body>
-  </html>
-`);
-    // res.redirect(process.env.CLIENT_ORIGIN);
+    console.log('Google callback - User:', req.user);
+    console.log('Google callback - Session:', req.session);
+    console.log('Google callback - Session ID:', req.sessionID);
+    console.log('Google callback - Cookies:', req.cookies);
 
-    // res.send(`
-    //   <html>
-    //     <body>
-    //       <p>Login successful. Redirecting to app in a few seconds...</p>
-    //       <script>
-    //         setTimeout(() => {
-    //           window.location.href = "${process.env.CLIENT_ORIGIN}";
-    //         }, 5000); // 5 seconds
-    //       </script>
-    //     </body>
-    //   </html>
-    // `);
-    // res
-    //   .status(200)
-    //   .json({ message: 'Login successful', user: req.user.displayName });
+    // Redirect to frontend
+    res.redirect(process.env.CLIENT_ORIGIN);
   },
 );
 
