@@ -30,7 +30,8 @@ window.addEventListener("DOMContentLoaded", () => {
     try {
       const productResponse = await fetch(
         // "http://127.0.0.1:3001/api/products",
-        "https://simple-pos-api.onrender.com/api/products",
+        // "https://simple-pos-api.onrender.com/api/products",
+        "/api/products",
         {
           method: "POST",
           headers: {
@@ -108,7 +109,8 @@ window.addEventListener("DOMContentLoaded", () => {
     try {
       const saleResponse = await fetch(
         // "http://127.0.0.1:3001/api/sales",
-        "https://simple-pos-api.onrender.com/api/sales",
+        // "https://simple-pos-api.onrender.com/api/sales",
+        "/api/sales",
         {
           method: "POST",
           headers: {
