@@ -41,6 +41,10 @@ npm install
 npm run server
 ```
 
-## Deployed API
+## Deployed backend API on Render
 
 [🔗 https://simple-pos-api.onrender.com/](https://simple-pos-api.onrender.com/)
+
+## Deployed frontend html on Netlify
+
+[🔗 https://simple-pos-api.netlify.app/](https://simple-pos-api.netlify.app/)
