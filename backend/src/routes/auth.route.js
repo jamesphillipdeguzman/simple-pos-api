@@ -7,7 +7,6 @@ dotenv.config();
 
 const router = express.Router();
 
-// Redirect user to Google for login
 /**
  * @swagger
  * /auth/google:
@@ -23,11 +22,10 @@ router.get(
   '/auth/google',
   passport.authenticate('google', {
     scope: ['profile', 'email'],
-    prompt: 'select_account', // Force Google to show account selector
+    prompt: 'select_account',
   }),
 );
 
-// Handle the OAuth callback
 /**
  * @swagger
  * /auth/google/callback:
@@ -42,10 +40,9 @@ router.get(
  *           text/html:
  *             schema:
  *               type: string
- *               example: <script>window.opener.postMessage(...)</script>
+ *               example: "<script>window.opener.postMessage(...)</script>"
  *       302:
  *         description: Redirect if login fails
- *
  */
 router.get(
   '/auth/google/callback',
@@ -56,12 +53,10 @@ router.get(
     console.log('Google callback - Session ID:', req.sessionID);
     console.log('Google callback - Cookies:', req.cookies);
 
-    // Send HTML that will communicate with the opener window
     res.send(`
       <html>
         <body>
           <script>
-            // Send message to opener window
             if (window.opener) {
               window.opener.postMessage({
                 type: 'GOOGLE_AUTH_SUCCESS',
@@ -78,7 +73,6 @@ router.get(
   },
 );
 
-// Add a route to check authentication status
 /**
  * @swagger
  * /auth/status:
@@ -99,11 +93,19 @@ router.get(
  *                   type: boolean
  *                   example: true
  *                 user:
- *                   displayName: James Phillip De Guzman
- *                   emails:
- *                     - value: jamesphillipdeguzman@gmail.com
- *
- *
+ *                   type: object
+ *                   properties:
+ *                     displayName:
+ *                       type: string
+ *                       example: James Phillip De Guzman
+ *                     emails:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           value:
+ *                             type: string
+ *                             example: jamesphillipdeguzman@gmail.com
  */
 router.get('/auth/status', (req, res) => {
   res.json({
@@ -112,7 +114,6 @@ router.get('/auth/status', (req, res) => {
   });
 });
 
-// Logout user and go back to Welcome message for my backend API
 /**
  * @swagger
  * /logout:
@@ -123,7 +124,6 @@ router.get('/auth/status', (req, res) => {
  *     responses:
  *       302:
  *         description: Redirects to homepage after logout
- *
  */
 router.get('/logout', (req, res) => {
   req.logout(() => {
@@ -131,7 +131,6 @@ router.get('/logout', (req, res) => {
   });
 });
 
-// Test if able to set-cookie
 /**
  * @swagger
  * /set-cookie:
@@ -148,7 +147,6 @@ router.get('/logout', (req, res) => {
  *             schema:
  *               type: string
  *               example: Cookie set
- *
  */
 router.get('/set-cookie', (req, res) => {
   res.cookie('test', 'cookie-value', {
