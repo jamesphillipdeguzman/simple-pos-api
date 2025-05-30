@@ -48,3 +48,7 @@ npm run server
 ## Deployed frontend html on Netlify
 
 [🔗 https://simple-pos-api.netlify.app/](https://simple-pos-api.netlify.app/)
+
+## Developer Portal (APIM)
+
+🔗 [https://simplepos-apim.developer.azure-api.net/](https://simplepos-apim.developer.azure-api.net/)
