@@ -177,12 +177,25 @@
                       "example": true
                     },
                     "user": {
-                      "displayName": "James Phillip De Guzman",
-                      "emails": [
-                        {
-                          "value": "jamesphillipdeguzman@gmail.com"
+                      "type": "object",
+                      "properties": {
+                        "displayName": {
+                          "type": "string",
+                          "example": "James Phillip De Guzman"
+                        },
+                        "emails": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "value": {
+                                "type": "string",
+                                "example": "jamesphillipdeguzman@gmail.com"
+                              }
+                            }
+                          }
                         }
-                      ]
+                      }
                     }
                   }
                 }
