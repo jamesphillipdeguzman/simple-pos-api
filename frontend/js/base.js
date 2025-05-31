@@ -21,45 +21,71 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function checkIfUserLoggedIn() {
-    const userInfoText =
-      userInfoElement.textContent || userInfoElement.innerText;
-    console.log("User info text:", userInfoText);
+  async function checkLoginStatusFromBackend() {
+    try {
+      const res = await fetch(
+        "https://simple-pos-api.onrender.com/api/auth/status",
+        {
+          credentials: "include",
+        }
+      );
 
-    // Detect login only if "Welcome" is present and "Guest" is NOT
-    if (
-      userInfoText &&
-      userInfoText.includes("Welcome") &&
-      !userInfoText.toLowerCase().includes("guest")
-    ) {
-      authState.isAuthenticated = true;
-    } else {
+      if (!res.ok) {
+        authState.isAuthenticated = false;
+        updateAuthUI();
+        return;
+      }
+
+      const data = await res.json();
+      if (data.user && data.user.name) {
+        authState.isAuthenticated = true;
+        userInfoElement.textContent = `Welcome, ${data.user.name}`;
+      } else {
+        authState.isAuthenticated = false;
+      }
+    } catch (error) {
+      console.error("Error checking auth status", error);
       authState.isAuthenticated = false;
     }
 
     updateAuthUI();
   }
 
-  // Run initial check
-  checkIfUserLoggedIn();
+  // Initial auth check
+  checkLoginStatusFromBackend();
 
   loginButton.addEventListener("click", () => {
-    checkIfUserLoggedIn();
-
     if (!authState.isAuthenticated) {
       alert("Please sign in with Google to access this feature.");
     }
   });
 
-  logoutButton.addEventListener("click", () => {
-    authState.isAuthenticated = false;
-    updateAuthUI();
+  logoutButton.addEventListener("click", async () => {
+    try {
+      const res = await fetch(
+        "https://simple-pos-api.onrender.com/api/auth/logout",
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
+      if (res.ok) {
+        authState.isAuthenticated = false;
+        userInfoElement.textContent = "Welcome, Guest";
+        updateAuthUI();
+      } else {
+        alert("Logout failed.");
+      }
+    } catch (error) {
+      console.error("Logout error", error);
+      alert("An error occurred while logging out.");
+    }
   });
 
-  function checkAuthAndSubmit(e, formType) {
+  function checkAuthAndSubmit(e) {
     if (!authState.isAuthenticated) {
       e.preventDefault();
-      alert("Please login first to create products or sales");
+      alert("Please login first to create products or sales.");
       return false;
     }
     return true;
@@ -67,7 +93,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   productForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    if (!checkAuthAndSubmit(e, "product")) return;
+    if (!checkAuthAndSubmit(e)) return;
 
     const product = {
       name: document.getElementById("name").value,
@@ -141,7 +167,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   saleForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    if (!checkAuthAndSubmit(e, "sale")) return;
+    if (!checkAuthAndSubmit(e)) return;
 
     const sale = {
       productId: document.getElementById("productId").value,
