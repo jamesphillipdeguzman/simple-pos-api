@@ -9,6 +9,35 @@ window.addEventListener("DOMContentLoaded", () => {
   let logoutButton;
   let userInfo;
 
+  // Check session on load
+  async function checkSession() {
+    try {
+      const response = await fetch(
+        "https://simple-pos-api.onrender.com/api/me",
+        {
+          credentials: "include",
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        authState.isAuthenticated = true;
+        authState.userName = data.name || "User";
+      } else {
+        authState.isAuthenticated = false;
+        authState.userName = null;
+      }
+    } catch (error) {
+      console.warn("Session check failed:", error);
+      authState.isAuthenticated = false;
+    }
+
+    updateAuthUI();
+  }
+
+  // Run this on load
+  checkSession();
+
   // Check if user is authenticated before allowing form submissions
   function checkAuthAndSubmit(e, formType) {
     if (!authState.isAuthenticated) {
