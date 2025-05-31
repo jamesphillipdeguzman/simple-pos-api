@@ -10,20 +10,19 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const authState = {
     isAuthenticated: false,
+    userName: null
   };
 
   // Flag to track if initial auth check finished
   let authChecked = false;
 
   function updateAuthUI() {
-    // Only show productForm if authenticated and username is set (not Guest)
-    const userIsKnown =
-      authState.isAuthenticated &&
-      userInfoElement.textContent &&
-      userInfoElement.textContent !== "Welcome, Guest";
+    console.log('Updating UI with auth state:', authState);
 
-    if (userIsKnown) {
+    if (authState.isAuthenticated && authState.userName) {
       productForm.style.display = "flex";
+      saleForm.style.display = "none";
+      userInfoElement.textContent = `Welcome, ${authState.userName}`;
     } else {
       productForm.style.display = "none";
       saleForm.style.display = "none";
@@ -42,7 +41,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
       if (!res.ok) {
         authState.isAuthenticated = false;
-        userInfoElement.textContent = "Welcome, Guest";
+        authState.userName = null;
         updateAuthUI();
         authChecked = true;
         return;
@@ -52,16 +51,15 @@ window.addEventListener("DOMContentLoaded", () => {
 
       if (data.user && typeof data.user.name === "string") {
         authState.isAuthenticated = true;
-        // Ensure userInfoElement.textContent is a string with user name
-        userInfoElement.textContent = `Welcome, ${data.user.name}`;
+        authState.userName = data.user.name;
       } else {
         authState.isAuthenticated = false;
-        userInfoElement.textContent = "Welcome, Guest";
+        authState.userName = null;
       }
     } catch (error) {
       console.error("Error checking auth status", error);
       authState.isAuthenticated = false;
-      userInfoElement.textContent = "Welcome, Guest";
+      authState.userName = null;
     }
 
     updateAuthUI();
@@ -92,11 +90,8 @@ window.addEventListener("DOMContentLoaded", () => {
       );
       if (res.ok) {
         authState.isAuthenticated = false;
-        userInfoElement.textContent = "Welcome, Guest";
+        authState.userName = null;
         updateAuthUI();
-      } else {
-        productForm.style.display = "none";
-        saleForm.style.display = "none";
       }
     } catch (error) {
       console.error("Logout error", error);
