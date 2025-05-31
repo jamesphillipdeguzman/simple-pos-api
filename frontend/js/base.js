@@ -42,16 +42,20 @@ window.addEventListener("DOMContentLoaded", () => {
 
   loginButton.addEventListener("click", () => {
     console.log("userInfo text:", userInfo.textContent);
-    // Adjust the condition below based on what your logged-in userInfo shows
+
     if (
       userInfo.textContent &&
       userInfo.textContent.trim() !== "Welcome, Guest"
     ) {
       productForm.style.display = "flex";
     } else {
+      userInfo.textContent = "Welcome guest"; // Set first
       productForm.style.display = "none";
-      alert("Please sign in with Google to access this feature.");
-      userInfo.textContent = "Welcome guest";
+
+      // Delay alert to let DOM update
+      setTimeout(() => {
+        alert("Please sign in with Google to access this feature.");
+      }, 0);
     }
   });
 
