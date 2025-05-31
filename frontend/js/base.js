@@ -22,6 +22,8 @@ window.addEventListener("DOMContentLoaded", () => {
   productForm = document.getElementById("productForm");
   saleForm = document.getElementById("saleForm");
   loginButton = document.getElementById("loginButton");
+  logoutButton = document.getElementById("logoutButton"); // <-- MISSING
+
   userInfo = document.getElementById("userInfo");
 
   // --- Set up totalAmount calculation when quantity changes ---
@@ -40,13 +42,24 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
   // -----------------------------------------------------------------------
-  logoutButton.addEventListener("click", () => {
-    productForm.style.display = "none";
-  });
 
   loginButton.addEventListener("click", () => {
     console.log("userInfo text:", userInfo.textContent);
     productForm.style.display = "flex";
+    if (
+      userInfo.textContent &&
+      userInfo.textContent.trim() !== "Welcome, Guest"
+    ) {
+      productForm.style.display = "flex";
+    } else {
+      userInfo.textContent = "Welcome guest"; // Set first
+      productForm.style.display = "none";
+
+      // Delay alert to let DOM update
+      setTimeout(() => {
+        alert("Please sign in with Google to access this feature.");
+      }, 0);
+    }
   });
 
   productForm.addEventListener("submit", async (e) => {
@@ -164,5 +177,8 @@ window.addEventListener("DOMContentLoaded", () => {
       console.error("Error submitting sale", error);
       alert("Error creating sale. Please try again.");
     }
+  });
+  logoutButton.addEventListener("click", () => {
+    productForm.style.display = "none";
   });
 });
