@@ -12,37 +12,30 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   function updateAuthUI() {
-    if (authState.isAuthenticated) {
-      loginButton.style.display = "none";
-      logoutButton.style.display = "block";
-      productForm.style.display = "flex";
-      userInfoElement.textContent = "Welcome, User";
-    } else {
-      loginButton.style.display = "block";
-      logoutButton.style.display = "none";
-      productForm.style.display = "none";
-      saleForm.style.display = "none";
-      userInfoElement.textContent = "Welcome, Guest";
-    }
+    loginButton.style.display = authState.isAuthenticated ? "none" : "block";
+    logoutButton.style.display = authState.isAuthenticated ? "block" : "none";
+    productForm.style.display = authState.isAuthenticated ? "flex" : "none";
+    saleForm.style.display = "none";
+    userInfoElement.textContent = authState.isAuthenticated
+      ? "Welcome, User"
+      : "Welcome, Guest";
   }
 
+  // One-time message listener for OAuth popup
+  window.addEventListener("message", (event) => {
+    if (event.origin !== "https://simple-pos-api.onrender.com") return;
+    if (event.data.success) {
+      authState.isAuthenticated = true;
+      updateAuthUI();
+    }
+  });
+
   loginButton.addEventListener("click", () => {
-    // Open Google OAuth login in a new popup
-    const popup = window.open(
+    window.open(
       "https://simple-pos-api.onrender.com/auth/google",
       "_blank",
       "width=500,height=600"
     );
-
-    // Listen for authentication result from the popup
-    window.addEventListener("message", (event) => {
-      if (event.origin !== "https://simple-pos-api.onrender.com") return;
-
-      if (event.data.success) {
-        authState.isAuthenticated = true;
-        updateAuthUI();
-      }
-    });
   });
 
   logoutButton.addEventListener("click", async () => {
@@ -63,7 +56,8 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     } catch (err) {
       console.error("Logout error", err);
-      alert("An error occurred during logout.");
+      authState.isAuthenticated = false;
+      updateAuthUI(); // still log user out on UI
     }
   });
 
@@ -205,6 +199,5 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Initial UI setup
-  updateAuthUI();
+  updateAuthUI(); // Initial UI setup
 });
