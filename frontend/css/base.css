@@ -29,6 +29,9 @@ a {
     margin: 2rem auto;
 }
 
+#productForm {
+    display: none;
+}
 
 #saleForm {
     display: none;

@@ -8,7 +8,7 @@ window.addEventListener("DOMContentLoaded", () => {
   function checkAuthAndSubmit(e, formType) {
     if (!authState.isAuthenticated) {
       e.preventDefault();
-      alert('Please login first to create products or sales');
+      alert("Please login first to create products or sales");
       return false;
     }
     return true;
@@ -16,12 +16,26 @@ window.addEventListener("DOMContentLoaded", () => {
 
   productForm = document.getElementById("productForm");
   saleForm = document.getElementById("saleForm");
+  loginButton = document.getElementById("loginButton");
+  userInfo = document.getElementById("userInfo");
+
+  // Check if the user is already logged in
+  loginButton.addEventListener("click", () => {
+    console.log("userInfo:", userInfo);
+    if (userInfo && Object.keys(userInfo).length > 0) {
+      productForm.style.display = "flex";
+    } else {
+      alert("Please sign in with Google to access this feature.");
+      productForm.style.display = "none";
+      // window.location.href = "/login"
+    }
+  });
 
   productForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     // Check authentication
-    if (!checkAuthAndSubmit(e, 'product')) return;
+    if (!checkAuthAndSubmit(e, "product")) return;
 
     // First, create a product
     const product = {
@@ -46,7 +60,7 @@ window.addEventListener("DOMContentLoaded", () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Accept": "application/json",
+            Accept: "application/json",
           },
           credentials: "include",
           mode: "cors",
@@ -57,7 +71,7 @@ window.addEventListener("DOMContentLoaded", () => {
       productData = await productResponse.json();
       if (!productResponse.ok) {
         if (productResponse.status === 401) {
-          alert('Your session has expired. Please login again.');
+          alert("Your session has expired. Please login again.");
           authState.isAuthenticated = false;
           updateAuthUI();
           return;
@@ -104,7 +118,7 @@ window.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     // Check authentication
-    if (!checkAuthAndSubmit(e, 'sale')) return;
+    if (!checkAuthAndSubmit(e, "sale")) return;
 
     // Second, create the sale
     const sale = {
@@ -134,7 +148,7 @@ window.addEventListener("DOMContentLoaded", () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Accept": "application/json",
+            Accept: "application/json",
           },
           credentials: "include",
           mode: "cors",
@@ -145,7 +159,7 @@ window.addEventListener("DOMContentLoaded", () => {
       saleData = await saleResponse.json();
       if (!saleResponse.ok) {
         if (saleResponse.status === 401) {
-          alert('Your session has expired. Please login again.');
+          alert("Your session has expired. Please login again.");
           authState.isAuthenticated = false;
           updateAuthUI();
           return;
