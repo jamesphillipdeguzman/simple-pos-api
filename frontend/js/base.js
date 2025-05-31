@@ -24,7 +24,7 @@ window.addEventListener("DOMContentLoaded", () => {
   async function checkLoginStatusFromBackend() {
     try {
       const res = await fetch(
-        "https://simple-pos-api.onrender.com/api/auth/status",
+        "https://simple-pos-api.onrender.com/auth/status",
         {
           credentials: "include",
         }
@@ -63,7 +63,7 @@ window.addEventListener("DOMContentLoaded", () => {
   logoutButton.addEventListener("click", async () => {
     try {
       const res = await fetch(
-        "https://simple-pos-api.onrender.com/api/auth/logout",
+        "https://simple-pos-api.onrender.com/auth/logout",
         {
           method: "POST",
           credentials: "include",
