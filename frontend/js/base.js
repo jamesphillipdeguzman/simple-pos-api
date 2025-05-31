@@ -1,31 +1,15 @@
 window.addEventListener("DOMContentLoaded", () => {
-  let productForm = document.getElementById("productForm");
-  let saleForm = document.getElementById("saleForm");
-  let loginButton = document.getElementById("loginButton");
-  let userInfo = document.getElementById("userInfo");
-
+  let productForm;
+  let saleForm;
   let productData;
   let saleData;
 
-  // Assuming you have authState somewhere globally or declared here:
-  const authState = { isAuthenticated: false };
-
-  function updateAuthUI() {
-    if (authState.isAuthenticated) {
-      productForm.style.display = "flex";
-      saleForm.style.display = "none";
-      loginButton.style.display = "none";
-      userInfo.textContent = "Welcome, User";
-    } else {
-      productForm.style.display = "none";
-      saleForm.style.display = "none";
-      loginButton.style.display = "block";
-      userInfo.textContent = "Welcome, Guest";
-    }
-  }
+  // Added missing declarations for these
+  let loginButton;
+  let userInfo;
 
   // Check if user is authenticated before allowing form submissions
-  function checkAuthAndSubmit(e) {
+  function checkAuthAndSubmit(e, formType) {
     if (!authState.isAuthenticated) {
       e.preventDefault();
       alert("Please login first to create products or sales");
@@ -34,21 +18,30 @@ window.addEventListener("DOMContentLoaded", () => {
     return true;
   }
 
-  // Show product form only if user info exists on login button click
+  productForm = document.getElementById("productForm");
+  saleForm = document.getElementById("saleForm");
+  loginButton = document.getElementById("loginButton");
+  userInfo = document.getElementById("userInfo");
+
+  // Check if the user is already logged in
   loginButton.addEventListener("click", () => {
-    if (userInfo && userInfo.textContent !== "Welcome, Guest") {
+    console.log("userInfo:", userInfo);
+    if (userInfo && Object.keys(userInfo).length > 0) {
       productForm.style.display = "flex";
     } else {
       alert("Please sign in with Google to access this feature.");
       productForm.style.display = "none";
+      // window.location.href = "/login"
     }
   });
 
   productForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    if (!checkAuthAndSubmit(e)) return;
+    // Check authentication
+    if (!checkAuthAndSubmit(e, "product")) return;
 
+    // First, create a product
     const product = {
       name: document.getElementById("name").value,
       sku: parseInt(document.getElementById("sku").value),
@@ -58,11 +51,6 @@ window.addEventListener("DOMContentLoaded", () => {
       category: document.getElementById("category").value,
       supplier: document.getElementById("supplier").value,
     };
-
-    if (!product.name || isNaN(product.price) || isNaN(product.stock)) {
-      alert("Please fill all required product fields.");
-      return;
-    }
 
     try {
       const productResponse = await fetch(
@@ -109,8 +97,10 @@ window.addEventListener("DOMContentLoaded", () => {
   saleForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    if (!checkAuthAndSubmit(e)) return;
+    // Check authentication
+    if (!checkAuthAndSubmit(e, "sale")) return;
 
+    // Second, create the sale
     const sale = {
       productId: document.getElementById("productId").value,
       priceAtSale: parseFloat(document.getElementById("priceAtSale").value),
@@ -119,17 +109,6 @@ window.addEventListener("DOMContentLoaded", () => {
       cashierName: document.getElementById("cashierName").value,
       paymentMethod: document.getElementById("paymentMethod").value,
     };
-
-    if (
-      !sale.cashierName ||
-      isNaN(sale.priceAtSale) ||
-      isNaN(sale.quantity) ||
-      isNaN(sale.totalAmount) ||
-      !sale.paymentMethod
-    ) {
-      alert("Please fill all required sale fields.");
-      return;
-    }
 
     try {
       const saleResponse = await fetch(
@@ -156,18 +135,20 @@ window.addEventListener("DOMContentLoaded", () => {
           return;
         }
         alert(`Error: ${saleData.message}`);
+        console.log(`Error: ${saleData.message}`);
         return;
       }
 
       alert("Sale created successfully!");
+      console.log("Sale created", saleData);
+
+      // Hide sale form after transaction
       saleForm.style.display = "none";
+      // Clear product form
       productForm.reset();
     } catch (error) {
       console.error("Error submitting sale", error);
       alert("Error creating sale. Please try again.");
     }
   });
-
-  // Initial UI setup
-  updateAuthUI();
 });
