@@ -12,30 +12,37 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   function updateAuthUI() {
-    const isLoggedIn =
-      loginButton.style.display === "none" &&
-      logoutButton.style.display !== "none";
-    authState.isAuthenticated = isLoggedIn;
-
-    if (isLoggedIn) {
+    if (authState.isAuthenticated) {
+      loginButton.style.display = "none";
+      logoutButton.style.display = "block";
       productForm.style.display = "flex";
-      userInfoElement.textContent =
-        userInfoElement.textContent || "Welcome, User";
+      userInfoElement.textContent = "Welcome, User";
     } else {
+      loginButton.style.display = "block";
+      logoutButton.style.display = "none";
       productForm.style.display = "none";
       saleForm.style.display = "none";
       userInfoElement.textContent = "Welcome, Guest";
     }
   }
 
-  // Check login button visibility and show product form if authenticated
   loginButton.addEventListener("click", () => {
-    if (authState.isAuthenticated) {
-      productForm.style.display = "flex";
-    } else {
-      alert("Please sign in with Google to access this feature.");
-      productForm.style.display = "none";
-    }
+    // Open Google OAuth login in a new popup
+    const popup = window.open(
+      "https://simple-pos-api.onrender.com/auth/google",
+      "_blank",
+      "width=500,height=600"
+    );
+
+    // Listen for authentication result from the popup
+    window.addEventListener("message", (event) => {
+      if (event.origin !== "https://simple-pos-api.onrender.com") return;
+
+      if (event.data.success) {
+        authState.isAuthenticated = true;
+        updateAuthUI();
+      }
+    });
   });
 
   logoutButton.addEventListener("click", async () => {
@@ -50,8 +57,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
       if (res.ok) {
         authState.isAuthenticated = false;
-        loginButton.style.display = "block";
-        logoutButton.style.display = "none";
         updateAuthUI();
       } else {
         alert("Logout failed.");
@@ -100,7 +105,6 @@ window.addEventListener("DOMContentLoaded", () => {
             Accept: "application/json",
           },
           credentials: "include",
-          mode: "cors",
           body: JSON.stringify(product),
         }
       );
@@ -109,9 +113,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
       if (!res.ok) {
         if (res.status === 401) {
-          alert("Your session has expired. Please login again.");
-          loginButton.style.display = "block";
-          logoutButton.style.display = "none";
+          alert("Session expired. Please login again.");
+          authState.isAuthenticated = false;
           updateAuthUI();
           return;
         }
@@ -177,7 +180,6 @@ window.addEventListener("DOMContentLoaded", () => {
           Accept: "application/json",
         },
         credentials: "include",
-        mode: "cors",
         body: JSON.stringify(sale),
       });
 
@@ -185,9 +187,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
       if (!res.ok) {
         if (res.status === 401) {
-          alert("Your session has expired. Please login again.");
-          loginButton.style.display = "block";
-          logoutButton.style.display = "none";
+          alert("Session expired. Please login again.");
+          authState.isAuthenticated = false;
           updateAuthUI();
           return;
         }
