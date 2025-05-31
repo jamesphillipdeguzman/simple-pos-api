@@ -21,7 +21,19 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Check if the user is already logged in
   loginButton.addEventListener("click", () => {
+    const userInfoElement = document.getElementById("userInfo");
+    const userInfoText =
+      userInfoElement.textContent || userInfoElement.innerText;
+
+    let userInfo = null;
+    // userInfo is a DOM element, not a JSON object, hence parse it first
+    try {
+      userInfo = JSON.parse(userInfoText);
+    } catch (e) {
+      console.warn("userInfo is not valid JSON:", userInfoText);
+    }
     console.log("userInfo:", userInfo);
+    // Then check if user is authenticated here...
     if (userInfo && Object.keys(userInfo).length > 0) {
       productForm.style.display = "flex";
     } else {
