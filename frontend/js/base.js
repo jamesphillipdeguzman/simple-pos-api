@@ -12,13 +12,17 @@ window.addEventListener("DOMContentLoaded", () => {
     isAuthenticated: false,
   };
 
+  // Flag to track if initial auth check finished
+  let authChecked = false;
+
   function updateAuthUI() {
     if (authState.isAuthenticated) {
       productForm.style.display = "flex";
+      userInfoElement.textContent =
+        userInfoElement.textContent || "Welcome, User";
     } else {
       productForm.style.display = "none";
       saleForm.style.display = "none";
-      // At start or in your authState default
       userInfoElement.textContent = "Welcome, Guest";
     }
   }
@@ -35,6 +39,7 @@ window.addEventListener("DOMContentLoaded", () => {
       if (!res.ok) {
         authState.isAuthenticated = false;
         updateAuthUI();
+        authChecked = true;
         return;
       }
 
@@ -44,19 +49,26 @@ window.addEventListener("DOMContentLoaded", () => {
         userInfoElement.textContent = `Welcome, ${data.user.name}`;
       } else {
         authState.isAuthenticated = false;
+        userInfoElement.textContent = "Welcome, Guest";
       }
     } catch (error) {
       console.error("Error checking auth status", error);
       authState.isAuthenticated = false;
+      userInfoElement.textContent = "Welcome, Guest";
     }
 
     updateAuthUI();
+    authChecked = true;
   }
 
   // Initial auth check
   checkLoginStatusFromBackend();
 
   loginButton.addEventListener("click", () => {
+    if (!authChecked) {
+      alert("Checking login status, please wait...");
+      return;
+    }
     if (!authState.isAuthenticated) {
       alert("Please sign in with Google to access this feature.");
     }
