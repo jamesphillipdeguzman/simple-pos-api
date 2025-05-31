@@ -23,15 +23,17 @@ window.addEventListener("DOMContentLoaded", () => {
   loginButton = document.getElementById("loginButton");
   userInfo = document.getElementById("userInfo");
 
-  // Check if the user is already logged in
   loginButton.addEventListener("click", () => {
-    console.log("userInfo:", userInfo);
-    if (userInfo && Object.keys(userInfo).length > 0) {
+    console.log("userInfo text:", userInfo.textContent);
+    // Adjust the condition below based on what your logged-in userInfo shows
+    if (
+      userInfo.textContent &&
+      userInfo.textContent.trim() !== "Welcome, Guest"
+    ) {
       productForm.style.display = "flex";
     } else {
-      alert("Please sign in with Google to access this feature.");
       productForm.style.display = "none";
-      // window.location.href = "/login"
+      alert("Please sign in with Google to access this feature.");
     }
   });
 
