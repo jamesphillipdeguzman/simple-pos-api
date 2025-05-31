@@ -6,6 +6,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Added missing declarations for these
   let loginButton;
+  let logoutButton;
   let userInfo;
 
   // Check if user is authenticated before allowing form submissions
@@ -57,6 +58,10 @@ window.addEventListener("DOMContentLoaded", () => {
         alert("Please sign in with Google to access this feature.");
       }, 0);
     }
+  });
+
+  logoutButton.addEventListener("click", () => {
+    productForm.style.display = "none";
   });
 
   productForm.addEventListener("submit", async (e) => {
