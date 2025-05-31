@@ -18,6 +18,8 @@ window.addEventListener("DOMContentLoaded", () => {
     } else {
       productForm.style.display = "none";
       saleForm.style.display = "none";
+      // At start or in your authState default
+      userInfoElement.textContent = "Welcome, Guest";
     }
   }
 
