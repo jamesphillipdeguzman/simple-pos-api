@@ -40,6 +40,9 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
   // -----------------------------------------------------------------------
+  logoutButton.addEventListener("click", () => {
+    productForm.style.display = "none";
+  });
 
   loginButton.addEventListener("click", () => {
     console.log("userInfo text:", userInfo.textContent);
@@ -58,10 +61,6 @@ window.addEventListener("DOMContentLoaded", () => {
         alert("Please sign in with Google to access this feature.");
       }, 0);
     }
-  });
-
-  logoutButton.addEventListener("click", () => {
-    productForm.style.display = "none";
   });
 
   productForm.addEventListener("submit", async (e) => {
