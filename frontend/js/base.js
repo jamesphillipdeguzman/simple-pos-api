@@ -34,7 +34,10 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     console.log("userInfo:", userInfo);
     // Then check if user is authenticated here...
-    if (userInfo && Object.keys(userInfo).length > 0) {
+    if (
+      (userInfo && Object.keys(userInfo).length > 0) ||
+      userInfoText.length > 0
+    ) {
       productForm.style.display = "flex";
     } else {
       alert("Please sign in with Google to access this feature.");
