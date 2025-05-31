@@ -74,7 +74,8 @@ window.addEventListener("DOMContentLoaded", () => {
         userInfoElement.textContent = "Welcome, Guest";
         updateAuthUI();
       } else {
-        alert("Logout failed.");
+        alert("User was logged out.");
+        updateAuthUI();
       }
     } catch (error) {
       console.error("Logout error", error);
