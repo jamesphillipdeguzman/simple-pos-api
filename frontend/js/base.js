@@ -1,117 +1,55 @@
 window.addEventListener("DOMContentLoaded", () => {
-  const productForm = document.getElementById("productForm");
-  const saleForm = document.getElementById("saleForm");
-  const loginButton = document.getElementById("loginButton");
-  const logoutButton = document.getElementById("logoutButton");
-  const userInfoElement = document.getElementById("userInfo");
-
+  let productForm;
+  let saleForm;
   let productData;
   let saleData;
 
-  const authState = {
-    isAuthenticated: false,
-    userName: null
-  };
-
-  // Flag to track if initial auth check finished
-  let authChecked = false;
-
-  function updateAuthUI() {
-    console.log('Updating UI with auth state:', authState);
-
-    if (authState.isAuthenticated && authState.userName) {
-      productForm.style.display = "flex";
-      saleForm.style.display = "none";
-      userInfoElement.textContent = `Welcome, ${authState.userName}`;
-    } else {
-      productForm.style.display = "none";
-      saleForm.style.display = "none";
-      userInfoElement.textContent = "Welcome, Guest";
-    }
-  }
-
-  async function checkLoginStatusFromBackend() {
-    try {
-      const res = await fetch(
-        "https://simple-pos-api.onrender.com/auth/status",
-        {
-          credentials: "include",
-        }
-      );
-
-      if (!res.ok) {
-        authState.isAuthenticated = false;
-        authState.userName = null;
-        updateAuthUI();
-        authChecked = true;
-        return;
-      }
-
-      const data = await res.json();
-
-      if (data.user && typeof data.user.name === "string") {
-        authState.isAuthenticated = true;
-        authState.userName = data.user.name;
-      } else {
-        authState.isAuthenticated = false;
-        authState.userName = null;
-      }
-    } catch (error) {
-      console.error("Error checking auth status", error);
-      authState.isAuthenticated = false;
-      authState.userName = null;
-    }
-
-    updateAuthUI();
-    authChecked = true;
-  }
-
-  // Initial auth check
-  checkLoginStatusFromBackend();
-
-  loginButton.addEventListener("click", () => {
-    if (!authChecked) {
-      alert("Checking login status, please wait...");
-      return;
-    }
-    if (!authState.isAuthenticated) {
-      alert("Please sign in with Google to access this feature.");
-    }
-  });
-
-  logoutButton.addEventListener("click", async () => {
-    try {
-      const res = await fetch(
-        "https://simple-pos-api.onrender.com/auth/logout",
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
-      if (res.ok) {
-        authState.isAuthenticated = false;
-        authState.userName = null;
-        updateAuthUI();
-      }
-    } catch (error) {
-      console.error("Logout error", error);
-      alert("An error occurred while logging out.");
-    }
-  });
-
-  function checkAuthAndSubmit(e) {
+  // Check if user is authenticated before allowing form submissions
+  function checkAuthAndSubmit(e, formType) {
     if (!authState.isAuthenticated) {
       e.preventDefault();
-      alert("Please login first to create products or sales.");
+      alert("Please login first to create products or sales");
       return false;
     }
     return true;
   }
 
+  productForm = document.getElementById("productForm");
+  saleForm = document.getElementById("saleForm");
+  loginButton = document.getElementById("loginButton");
+  userInfo = document.getElementById("userInfo");
+
+  // Check if the user is already logged in
+  loginButton.addEventListener("click", () => {
+    const userInfoElement = document.getElementById("userInfo");
+    const userInfoText =
+      userInfoElement.textContent || userInfoElement.innerText;
+
+    let userInfo = null;
+    // userInfo is a DOM element, not a JSON object, hence parse it first
+    try {
+      userInfo = JSON.parse(userInfoText);
+    } catch (e) {
+      console.warn("userInfo is not valid JSON:", userInfoText);
+    }
+    console.log("userInfo:", userInfo);
+    // Then check if user is authenticated here...
+    if (userInfo && Object.keys(userInfo).length > 0) {
+      productForm.style.display = "flex";
+    } else {
+      alert("Please sign in with Google to access this feature.");
+      productForm.style.display = "none";
+      // window.location.href = "/login"
+    }
+  });
+
   productForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    if (!checkAuthAndSubmit(e)) return;
 
+    // Check authentication
+    if (!checkAuthAndSubmit(e, "product")) return;
+
+    // First, create a product
     const product = {
       name: document.getElementById("name").value,
       sku: parseInt(document.getElementById("sku").value),
@@ -128,7 +66,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const response = await fetch(
+      const productResponse = await fetch(
         "https://simple-pos-api.onrender.com/api/products",
         {
           method: "POST",
@@ -142,26 +80,31 @@ window.addEventListener("DOMContentLoaded", () => {
         }
       );
 
-      productData = await response.json();
-
-      if (!response.ok) {
-        if (response.status === 401) {
+      productData = await productResponse.json();
+      if (!productResponse.ok) {
+        if (productResponse.status === 401) {
           alert("Your session has expired. Please login again.");
           authState.isAuthenticated = false;
           updateAuthUI();
           return;
         }
         alert(`Error: ${productData.message}`);
+        console.log(`Error: ${productData.message}`);
         return;
       }
 
       alert("Product created successfully!");
       console.log("Product created", productData);
 
+      // Clear old sale form data
       saleForm.reset();
       saleForm.style.display = "flex";
+
+      // Populate the Sale ID with the productData.id
       document.getElementById("productId").value =
         productData._id || productData.id;
+
+      // Prefill the price at sale
       document.getElementById("priceAtSale").value =
         productData.price.toFixed(2);
     } catch (error) {
@@ -170,6 +113,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Listener for quantity to compute totalAmount in sales form
   document.getElementById("quantity").addEventListener("input", () => {
     const quantity = parseInt(document.getElementById("quantity").value);
     const priceAtSale = parseFloat(
@@ -184,8 +128,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
   saleForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    if (!checkAuthAndSubmit(e)) return;
 
+    // Check authentication
+    if (!checkAuthAndSubmit(e, "sale")) return;
+
+    // Second, create the sale
     const sale = {
       productId: document.getElementById("productId").value,
       priceAtSale: parseFloat(document.getElementById("priceAtSale").value),
@@ -207,7 +154,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const response = await fetch(
+      const saleResponse = await fetch(
         "https://simple-pos-api.onrender.com/api/sales",
         {
           method: "POST",
@@ -221,23 +168,25 @@ window.addEventListener("DOMContentLoaded", () => {
         }
       );
 
-      saleData = await response.json();
-
-      if (!response.ok) {
-        if (response.status === 401) {
+      saleData = await saleResponse.json();
+      if (!saleResponse.ok) {
+        if (saleResponse.status === 401) {
           alert("Your session has expired. Please login again.");
           authState.isAuthenticated = false;
           updateAuthUI();
           return;
         }
         alert(`Error: ${saleData.message}`);
+        console.log(`Error: ${saleData.message}`);
         return;
       }
 
       alert("Sale created successfully!");
       console.log("Sale created", saleData);
 
+      // Hide sale form after transaction
       saleForm.style.display = "none";
+      // Clear product form
       productForm.reset();
     } catch (error) {
       console.error("Error submitting sale", error);
