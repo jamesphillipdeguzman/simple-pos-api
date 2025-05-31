@@ -5,12 +5,11 @@ window.addEventListener("DOMContentLoaded", () => {
   const logoutButton = document.getElementById("logoutButton");
   const userInfoElement = document.getElementById("userInfo");
 
-  let productData, saleData;
-
   const authState = {
     isAuthenticated: false,
   };
 
+  // Initial UI
   function updateAuthUI() {
     loginButton.style.display = authState.isAuthenticated ? "none" : "block";
     logoutButton.style.display = authState.isAuthenticated ? "block" : "none";
@@ -21,23 +20,37 @@ window.addEventListener("DOMContentLoaded", () => {
       : "Welcome, Guest";
   }
 
-  // One-time message listener for OAuth popup
-  window.addEventListener("message", (event) => {
-    if (event.origin !== "https://simple-pos-api.onrender.com") return;
-    if (event.data.success) {
-      authState.isAuthenticated = true;
-      updateAuthUI();
-    }
-  });
+  updateAuthUI();
 
+  //  Handle Google login
   loginButton.addEventListener("click", () => {
-    window.open(
+    const popup = window.open(
       "https://simple-pos-api.onrender.com/auth/google",
       "_blank",
       "width=500,height=600"
     );
+
+    const checkPopup = setInterval(() => {
+      if (popup.closed) {
+        clearInterval(checkPopup);
+      }
+    }, 500);
+
+    //  Only once
+    const onAuthMessage = (event) => {
+      if (event.origin !== "https://simple-pos-api.onrender.com") return;
+      if (event.data.success) {
+        authState.isAuthenticated = true;
+        updateAuthUI();
+        console.log("User authenticated.");
+        window.removeEventListener("message", onAuthMessage); // remove listener
+      }
+    };
+
+    window.addEventListener("message", onAuthMessage);
   });
 
+  //  Logout
   logoutButton.addEventListener("click", async () => {
     try {
       const res = await fetch(
@@ -48,28 +61,26 @@ window.addEventListener("DOMContentLoaded", () => {
         }
       );
 
-      if (res.ok) {
-        authState.isAuthenticated = false;
-        updateAuthUI();
-      } else {
-        alert("Logout failed.");
-      }
+      authState.isAuthenticated = false;
+      updateAuthUI();
     } catch (err) {
       console.error("Logout error", err);
       authState.isAuthenticated = false;
-      updateAuthUI(); // still log user out on UI
+      updateAuthUI();
     }
   });
 
+  //  Utility: Check login before submitting
   function checkAuthAndSubmit(e) {
     if (!authState.isAuthenticated) {
       e.preventDefault();
-      alert("Please login first to create products or sales.");
+      alert("Please login first.");
       return false;
     }
     return true;
   }
 
+  //  Product submit handler (same as before)
   productForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!checkAuthAndSubmit(e)) return;
@@ -84,64 +95,48 @@ window.addEventListener("DOMContentLoaded", () => {
       supplier: document.getElementById("supplier").value,
     };
 
-    if (!product.name || isNaN(product.price) || isNaN(product.stock)) {
-      alert("Please fill all required product fields.");
-      return;
-    }
-
     try {
       const res = await fetch(
         "https://simple-pos-api.onrender.com/api/products",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           credentials: "include",
           body: JSON.stringify(product),
         }
       );
 
-      productData = await res.json();
+      const data = await res.json();
 
       if (!res.ok) {
-        if (res.status === 401) {
-          alert("Session expired. Please login again.");
-          authState.isAuthenticated = false;
-          updateAuthUI();
-          return;
-        }
-        alert(`Error: ${productData.message}`);
+        alert(data.message || "Failed to create product.");
         return;
       }
 
       alert("Product created successfully!");
-      saleForm.reset();
       saleForm.style.display = "flex";
+      saleForm.reset();
 
-      document.getElementById("productId").value =
-        productData._id || productData.id;
-      document.getElementById("priceAtSale").value =
-        productData.price.toFixed(2);
-    } catch (error) {
-      console.error("Error submitting product", error);
-      alert("Error creating product. Please try again.");
+      document.getElementById("productId").value = data._id || data.id;
+      document.getElementById("priceAtSale").value = data.price.toFixed(2);
+    } catch (err) {
+      console.error("Product creation error", err);
+      alert("Failed to create product.");
     }
   });
 
+  //  Sale form quantity input
   document.getElementById("quantity").addEventListener("input", () => {
     const quantity = parseInt(document.getElementById("quantity").value);
-    const priceAtSale = parseFloat(
-      document.getElementById("priceAtSale").value
-    );
-    if (!isNaN(quantity) && !isNaN(priceAtSale)) {
-      document.getElementById("totalAmount").value = (
-        quantity * priceAtSale
-      ).toFixed(2);
+    const price = parseFloat(document.getElementById("priceAtSale").value);
+    if (!isNaN(quantity) && !isNaN(price)) {
+      document.getElementById("totalAmount").value = (quantity * price).toFixed(
+        2
+      );
     }
   });
 
+  //  Sale form submit
   saleForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!checkAuthAndSubmit(e)) return;
@@ -155,49 +150,27 @@ window.addEventListener("DOMContentLoaded", () => {
       paymentMethod: document.getElementById("paymentMethod").value,
     };
 
-    if (
-      !sale.cashierName ||
-      isNaN(sale.priceAtSale) ||
-      isNaN(sale.quantity) ||
-      isNaN(sale.totalAmount) ||
-      !sale.paymentMethod
-    ) {
-      alert("Please fill all required sale fields.");
-      return;
-    }
-
     try {
       const res = await fetch("https://simple-pos-api.onrender.com/api/sales", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify(sale),
       });
 
-      saleData = await res.json();
+      const data = await res.json();
 
       if (!res.ok) {
-        if (res.status === 401) {
-          alert("Session expired. Please login again.");
-          authState.isAuthenticated = false;
-          updateAuthUI();
-          return;
-        }
-        alert(`Error: ${saleData.message}`);
+        alert(data.message || "Failed to create sale.");
         return;
       }
 
-      alert("Sale created successfully!");
-      saleForm.style.display = "none";
+      alert("Sale recorded!");
       productForm.reset();
-    } catch (error) {
-      console.error("Error submitting sale", error);
-      alert("Error creating sale. Please try again.");
+      saleForm.style.display = "none";
+    } catch (err) {
+      console.error("Sale error", err);
+      alert("Failed to create sale.");
     }
   });
-
-  updateAuthUI(); // Initial UI setup
 });
