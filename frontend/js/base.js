@@ -11,48 +11,38 @@ window.addEventListener("DOMContentLoaded", () => {
     isAuthenticated: false,
   };
 
-  function setFormEnabled(form, enabled) {
-    const elements = form.querySelectorAll("input, select, textarea, button");
-    elements.forEach((el) => {
-      el.disabled = !enabled;
-    });
-  }
-
   function updateAuthUI() {
     if (authState.isAuthenticated) {
       loginButton.style.display = "none";
       logoutButton.style.display = "block";
+      productForm.style.display = "flex";
       userInfoElement.textContent = "Welcome, User";
-      setFormEnabled(productForm, true);
-      setFormEnabled(saleForm, true);
     } else {
       loginButton.style.display = "block";
       logoutButton.style.display = "none";
+      productForm.style.display = "none";
+      saleForm.style.display = "none";
       userInfoElement.textContent = "Welcome, Guest";
-      setFormEnabled(productForm, false);
-      setFormEnabled(saleForm, false);
-    }
-  }
-
-  async function checkSession() {
-    try {
-      const res = await fetch(
-        "https://simple-pos-api.onrender.com/auth/status",
-        {
-          credentials: "include",
-        }
-      );
-      const data = await res.json();
-      authState.isAuthenticated = !!data?.isAuthenticated;
-    } catch {
-      authState.isAuthenticated = false;
-    } finally {
-      updateAuthUI();
     }
   }
 
   loginButton.addEventListener("click", () => {
-    window.location.href = "https://simple-pos-api.onrender.com/auth/google";
+    // Open Google OAuth login in a new popup
+    const popup = window.open(
+      "https://simple-pos-api.onrender.com/auth/google",
+      "_blank",
+      "width=500,height=600"
+    );
+
+    // Listen for authentication result from the popup
+    window.addEventListener("message", (event) => {
+      if (event.origin !== "https://simple-pos-api.onrender.com") return;
+
+      if (event.data.success) {
+        authState.isAuthenticated = true;
+        updateAuthUI();
+      }
+    });
   });
 
   logoutButton.addEventListener("click", async () => {
@@ -215,6 +205,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Initial check for session
-  checkSession();
+  // Initial UI setup
+  updateAuthUI();
 });
