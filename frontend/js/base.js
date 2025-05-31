@@ -23,6 +23,23 @@ window.addEventListener("DOMContentLoaded", () => {
   loginButton = document.getElementById("loginButton");
   userInfo = document.getElementById("userInfo");
 
+  // --- Set up totalAmount calculation when quantity changes ---
+  const quantityInput = document.getElementById("quantity");
+  const priceAtSaleInput = document.getElementById("priceAtSale");
+  const totalAmountInput = document.getElementById("totalAmount");
+
+  quantityInput.addEventListener("input", () => {
+    const quantity = parseInt(quantityInput.value);
+    const price = parseFloat(priceAtSaleInput.value);
+
+    if (!isNaN(quantity) && !isNaN(price)) {
+      totalAmountInput.value = (quantity * price).toFixed(2);
+    } else {
+      totalAmountInput.value = "";
+    }
+  });
+  // -----------------------------------------------------------------------
+
   loginButton.addEventListener("click", () => {
     console.log("userInfo text:", userInfo.textContent);
     // Adjust the condition below based on what your logged-in userInfo shows
