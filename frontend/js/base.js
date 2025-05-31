@@ -1,10 +1,55 @@
 window.addEventListener("DOMContentLoaded", () => {
-  let productForm;
-  let saleForm;
+  let productForm = document.getElementById("productForm");
+  let saleForm = document.getElementById("saleForm");
+  let loginButton = document.getElementById("loginButton");
+  let userInfoElement = document.getElementById("userInfo");
+
   let productData;
   let saleData;
 
-  // Check if user is authenticated before allowing form submissions
+  // Auth state tracking
+  const authState = {
+    isAuthenticated: false,
+  };
+
+  // Update UI based on auth status
+  function updateAuthUI() {
+    if (authState.isAuthenticated) {
+      productForm.style.display = "flex";
+    } else {
+      productForm.style.display = "none";
+      saleForm.style.display = "none";
+    }
+  }
+
+  // Extract user info string (no JSON parsing)
+  function checkIfUserLoggedIn() {
+    const userInfoText =
+      userInfoElement.textContent || userInfoElement.innerText;
+
+    // You can customize this logic if the backend eventually sends structured JSON
+    if (userInfoText && userInfoText.includes("Welcome")) {
+      authState.isAuthenticated = true;
+    } else {
+      authState.isAuthenticated = false;
+    }
+
+    updateAuthUI();
+  }
+
+  // Initial auth check on page load
+  checkIfUserLoggedIn();
+
+  // Click login button to re-check user info (e.g., after popup login)
+  loginButton.addEventListener("click", () => {
+    checkIfUserLoggedIn();
+
+    if (!authState.isAuthenticated) {
+      alert("Please sign in with Google to access this feature.");
+    }
+  });
+
+  // Prevent unauthenticated form submissions
   function checkAuthAndSubmit(e, formType) {
     if (!authState.isAuthenticated) {
       e.preventDefault();
@@ -14,42 +59,11 @@ window.addEventListener("DOMContentLoaded", () => {
     return true;
   }
 
-  productForm = document.getElementById("productForm");
-  saleForm = document.getElementById("saleForm");
-  loginButton = document.getElementById("loginButton");
-  userInfo = document.getElementById("userInfo");
-
-  // Check if the user is already logged in
-  loginButton.addEventListener("click", () => {
-    const userInfoElement = document.getElementById("userInfo");
-    const userInfoText =
-      userInfoElement.textContent || userInfoElement.innerText;
-
-    let userInfo = null;
-    // userInfo is a DOM element, not a JSON object, hence parse it first
-    try {
-      userInfo = JSON.parse(userInfoText);
-    } catch (e) {
-      console.warn("userInfo is not valid JSON:", userInfoText);
-    }
-    console.log("userInfo:", userInfo);
-    // Then check if user is authenticated here...
-    if (userInfo && Object.keys(userInfo).length > 0) {
-      productForm.style.display = "flex";
-    } else {
-      alert("Please sign in with Google to access this feature.");
-      productForm.style.display = "none";
-      // window.location.href = "/login"
-    }
-  });
-
+  // Handle product form submission
   productForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    // Check authentication
     if (!checkAuthAndSubmit(e, "product")) return;
 
-    // First, create a product
     const product = {
       name: document.getElementById("name").value,
       sku: parseInt(document.getElementById("sku").value),
@@ -81,6 +95,7 @@ window.addEventListener("DOMContentLoaded", () => {
       );
 
       productData = await productResponse.json();
+
       if (!productResponse.ok) {
         if (productResponse.status === 401) {
           alert("Your session has expired. Please login again.");
@@ -89,22 +104,18 @@ window.addEventListener("DOMContentLoaded", () => {
           return;
         }
         alert(`Error: ${productData.message}`);
-        console.log(`Error: ${productData.message}`);
         return;
       }
 
       alert("Product created successfully!");
       console.log("Product created", productData);
 
-      // Clear old sale form data
       saleForm.reset();
       saleForm.style.display = "flex";
 
-      // Populate the Sale ID with the productData.id
       document.getElementById("productId").value =
         productData._id || productData.id;
 
-      // Prefill the price at sale
       document.getElementById("priceAtSale").value =
         productData.price.toFixed(2);
     } catch (error) {
@@ -113,7 +124,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Listener for quantity to compute totalAmount in sales form
+  // Update totalAmount in sale form
   document.getElementById("quantity").addEventListener("input", () => {
     const quantity = parseInt(document.getElementById("quantity").value);
     const priceAtSale = parseFloat(
@@ -126,13 +137,11 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Handle sale form submission
   saleForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    // Check authentication
     if (!checkAuthAndSubmit(e, "sale")) return;
 
-    // Second, create the sale
     const sale = {
       productId: document.getElementById("productId").value,
       priceAtSale: parseFloat(document.getElementById("priceAtSale").value),
@@ -169,6 +178,7 @@ window.addEventListener("DOMContentLoaded", () => {
       );
 
       saleData = await saleResponse.json();
+
       if (!saleResponse.ok) {
         if (saleResponse.status === 401) {
           alert("Your session has expired. Please login again.");
@@ -177,16 +187,13 @@ window.addEventListener("DOMContentLoaded", () => {
           return;
         }
         alert(`Error: ${saleData.message}`);
-        console.log(`Error: ${saleData.message}`);
         return;
       }
 
       alert("Sale created successfully!");
       console.log("Sale created", saleData);
 
-      // Hide sale form after transaction
       saleForm.style.display = "none";
-      // Clear product form
       productForm.reset();
     } catch (error) {
       console.error("Error submitting sale", error);
