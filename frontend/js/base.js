@@ -51,6 +51,7 @@ window.addEventListener("DOMContentLoaded", () => {
     } else {
       productForm.style.display = "none";
       alert("Please sign in with Google to access this feature.");
+      userInfo.textContent = "Welcome guest";
     }
   });
 
