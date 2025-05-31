@@ -16,10 +16,14 @@ window.addEventListener("DOMContentLoaded", () => {
   let authChecked = false;
 
   function updateAuthUI() {
-    if (authState.isAuthenticated) {
+    // Only show productForm if authenticated and username is set (not Guest)
+    const userIsKnown =
+      authState.isAuthenticated &&
+      userInfoElement.textContent &&
+      userInfoElement.textContent !== "Welcome, Guest";
+
+    if (userIsKnown) {
       productForm.style.display = "flex";
-      userInfoElement.textContent =
-        userInfoElement.textContent || "Welcome, User";
     } else {
       productForm.style.display = "none";
       saleForm.style.display = "none";
@@ -38,14 +42,17 @@ window.addEventListener("DOMContentLoaded", () => {
 
       if (!res.ok) {
         authState.isAuthenticated = false;
+        userInfoElement.textContent = "Welcome, Guest";
         updateAuthUI();
         authChecked = true;
         return;
       }
 
       const data = await res.json();
-      if (data.user && data.user.name) {
+
+      if (data.user && typeof data.user.name === "string") {
         authState.isAuthenticated = true;
+        // Ensure userInfoElement.textContent is a string with user name
         userInfoElement.textContent = `Welcome, ${data.user.name}`;
       } else {
         authState.isAuthenticated = false;
