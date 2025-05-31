@@ -13,7 +13,7 @@ window.addEventListener("DOMContentLoaded", () => {
   async function checkSession() {
     try {
       const response = await fetch(
-        "https://simple-pos-api.onrender.com/api/me",
+        "https://simple-pos-api.onrender.com/auth/status",
         {
           credentials: "include",
         }
