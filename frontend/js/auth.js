@@ -23,7 +23,7 @@ function openGoogleAuthPopup() {
     console.log("PostMessage received:", event.origin, event.data);
 
     // Accept only messages from our own frontend
-    if (event.origin !== FRONTEND_URL) return;
+    if (event.origin !== BACKEND_URL) return;
 
     if (event.data.type === "GOOGLE_AUTH_SUCCESS") {
       authState.isAuthenticated = true;
