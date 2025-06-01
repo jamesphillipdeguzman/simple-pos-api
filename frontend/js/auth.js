@@ -3,7 +3,9 @@ let authState = {
   user: null,
 };
 
-// Function to open Google auth popup
+const BACKEND_URL = "https://simple-pos-api.onrender.com";
+const FRONTEND_URL = "https://simple-pos-api.netlify.app";
+
 function openGoogleAuthPopup() {
   const width = 500;
   const height = 600;
@@ -11,52 +13,46 @@ function openGoogleAuthPopup() {
   const top = window.screenY + (window.outerHeight - height) / 2;
 
   const popup = window.open(
-    "https://simple-pos-api.onrender.com/auth/google",
+    `${BACKEND_URL}/auth/google`,
     "Google Auth",
     `width=${width},height=${height},left=${left},top=${top}`
   );
 
   // Listen for message from popup
   window.addEventListener("message", (event) => {
-    // Verify origin
-    if (event.origin !== "https://simple-pos-api.onrender.com") return;
+    console.log("PostMessage received:", event.origin, event.data);
+
+    // Accept only messages from our own frontend
+    if (event.origin !== FRONTEND_URL) return;
 
     if (event.data.type === "GOOGLE_AUTH_SUCCESS") {
       authState.isAuthenticated = true;
       authState.user = event.data.user;
 
-      // Update UI
       updateAuthUI();
 
-      // Close popup if it's still open
       if (popup) popup.close();
     }
   });
 }
 
-// Function to check auth status
 async function checkAuthStatus() {
   try {
-    const response = await fetch(
-      "https://simple-pos-api.onrender.com/auth/status",
-      {
-        credentials: "include",
-        mode: "cors",
-      }
-    );
+    const response = await fetch(`${BACKEND_URL}/auth/status`, {
+      credentials: "include",
+      mode: "cors",
+    });
 
     const data = await response.json();
     authState.isAuthenticated = data.authenticated;
     authState.user = data.user;
 
-    // Update UI
     updateAuthUI();
   } catch (error) {
     console.error("Error checking auth status:", error);
   }
 }
 
-// Function to update UI based on auth state
 function updateAuthUI() {
   const loginButton = document.getElementById("loginButton");
   const userInfo = document.getElementById("userInfo");
@@ -64,39 +60,32 @@ function updateAuthUI() {
   const appMessage = document.getElementById("appMessage");
   const productForm = document.getElementById("productForm");
 
-  // Do not show productForm by default
   productForm.style.display = "none";
 
   if (authState.isAuthenticated) {
-    // Show user info and logout button
     if (loginButton) loginButton.style.display = "none";
     if (userInfo) {
       userInfo.style.display = "block";
       userInfo.textContent = `Welcome, ${authState.user.displayName}`;
       console.log("userInfo:", userInfo.textContent);
-      appMessage.textContent = "Ready for testing";
-      productForm.style.display = "flex";
     }
-    if (logoutButton) {
-      logoutButton.style.display = "block";
-    }
+    if (logoutButton) logoutButton.style.display = "block";
+    if (appMessage) appMessage.textContent = "Ready for testing";
+    productForm.style.display = "flex";
   } else {
-    // Show login button
     if (loginButton) loginButton.style.display = "block";
     if (userInfo) userInfo.style.display = "none";
-    if (logoutButton) {
-      logoutButton.style.display = "none";
+    if (logoutButton) logoutButton.style.display = "none";
+    if (appMessage)
       appMessage.textContent =
         "Please sign in with Google to access this feature.";
-      productForm.style.display = "none";
-    }
+    productForm.style.display = "none";
   }
 }
 
-// Function to handle logout
 async function handleLogout() {
   try {
-    await fetch("https://simple-pos-api.onrender.com/logout", {
+    await fetch(`${BACKEND_URL}/logout`, {
       credentials: "include",
       mode: "cors",
     });
@@ -104,16 +93,13 @@ async function handleLogout() {
     authState.isAuthenticated = false;
     authState.user = null;
 
-    // Update UI
     updateAuthUI();
   } catch (error) {
     console.error("Error logging out:", error);
   }
 }
 
-// Initialize auth when DOM is loaded
 document.addEventListener("DOMContentLoaded", () => {
-  // Add event listeners
   const loginButton = document.getElementById("loginButton");
   const logoutButton = document.getElementById("logoutButton");
 
@@ -125,6 +111,5 @@ document.addEventListener("DOMContentLoaded", () => {
     logoutButton.addEventListener("click", handleLogout);
   }
 
-  // Check initial auth status
   checkAuthStatus();
 });
