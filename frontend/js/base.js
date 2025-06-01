@@ -14,6 +14,9 @@ window.addEventListener("DOMContentLoaded", () => {
     userName: null,
   };
 
+  // Do not show the productFOrm by default
+  productForm.style.display = "none";
+
   function updateAuthUI() {
     if (!userInfo) return;
 
