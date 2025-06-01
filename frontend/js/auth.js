@@ -64,17 +64,18 @@ function updateAuthUI() {
   const appMessage = document.getElementById("appMessage");
   const productForm = document.getElementById("productForm");
 
+  // Do not show productForm by default
+  productForm.style.display = "none";
+
   if (authState.isAuthenticated) {
     console.log("userInfo text:", userInfo.textContent);
-    productForm.style.display = "flex";
 
     // Show user info and logout button
     if (loginButton) loginButton.style.display = "none";
     if (userInfo) {
       userInfo.style.display = "block";
       userInfo.textContent = `Welcome, ${authState.user.displayName}`;
-      appMessage.textContent =
-        "POST Method Test for Product & Sale Collections in MongoDB";
+      appMessage.textContent = "Ready for testing";
       productForm.style.display = "flex";
     }
     if (logoutButton) {
