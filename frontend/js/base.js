@@ -4,10 +4,10 @@ window.addEventListener("DOMContentLoaded", () => {
   let productData;
   let saleData;
 
-  // Added missing declarations for these
   let loginButton;
   let logoutButton;
   let userInfo;
+  let appMessage;
 
   let authState = {
     isAuthenticated: false,
@@ -46,10 +46,14 @@ window.addEventListener("DOMContentLoaded", () => {
     if (authState.isAuthenticated) {
       userInfo.textContent = `Welcome, ${authState.userName || "User"}`;
       productForm.style.display = "flex";
+      appMessage.textContent =
+        "POST Method Test for Product & Sale Collections in MongoDB";
     } else {
       userInfo.textContent = "Welcome, Guest";
       productForm.style.display = "none";
       saleForm.style.display = "none";
+      appMessage.textContent =
+        "Please sign in with Google to access this feature.";
     }
   }
 
@@ -69,7 +73,8 @@ window.addEventListener("DOMContentLoaded", () => {
   productForm = document.getElementById("productForm");
   saleForm = document.getElementById("saleForm");
   loginButton = document.getElementById("loginButton");
-  logoutButton = document.getElementById("logoutButton"); // <-- MISSING
+  logoutButton = document.getElementById("logoutButton");
+  appMessage = document.getElementById("appMessage");
 
   userInfo = document.getElementById("userInfo");
 
