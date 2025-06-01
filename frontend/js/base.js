@@ -3,6 +3,7 @@ window.addEventListener("DOMContentLoaded", () => {
   let saleForm;
   let productData;
   let saleData;
+  let apiUrl = "https://simple-pos-api.netlify.app/";
 
   // let logoutButton;
 
@@ -46,7 +47,7 @@ window.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const productResponse = await fetch("/api/products", {
+      const productResponse = await fetch(`${apiUrl}/api/sales`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -98,7 +99,7 @@ window.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const saleResponse = await fetch("/api/sales", {
+      const saleResponse = await fetch(`${apiUrl}/api/sales`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
