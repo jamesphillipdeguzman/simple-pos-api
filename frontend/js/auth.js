@@ -66,6 +66,7 @@ function updateAuthUI() {
 
   if (authState.isAuthenticated) {
     console.log("userInfo text:", userInfo.textContent);
+    productForm.style.display = "flex";
 
     // Show user info and logout button
     if (loginButton) loginButton.style.display = "none";
@@ -78,15 +79,17 @@ function updateAuthUI() {
     }
     if (logoutButton) {
       logoutButton.style.display = "block";
-      appMessage.textContent =
-        "Please sign in with Google to access this feature.";
-      productForm.style.display = "none";
     }
   } else {
     // Show login button
     if (loginButton) loginButton.style.display = "block";
     if (userInfo) userInfo.style.display = "none";
-    if (logoutButton) logoutButton.style.display = "none";
+    if (logoutButton) {
+      logoutButton.style.display = "none";
+      appMessage.textContent =
+        "Please sign in with Google to access this feature.";
+      productForm.style.display = "none";
+    }
   }
 }
 
