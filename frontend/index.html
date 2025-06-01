@@ -6,13 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple POS System</title>
     <link rel="stylesheet" href="css/base.css">
+    <link rel="icon" href="images/favicon/favicon-96x96-nobg.ico" type="image/x-icon">
     <script src="js/auth.js" defer></script>
     <script src="js/base.js" defer></script>
 </head>
 
 <body>
     <header>
-        <h1><a href="https://simple-pos-api.onrender.com/api-docs" target="_blank">Simple POS System</a></h1>
+        <h1>
+            <img src="images/favicon/favicon-96x96-nobg.png" height="50" width="50">
+            <a href="https://simple-pos-api.onrender.com/api-docs" target="_blank">
+                Simple POS System</a>
+        </h1>
         <div id="authContainer">
             <button id="loginButton" class="auth-button">Login with Google</button>
             <span id="userInfo" style="display: none;"></span>
@@ -27,6 +32,7 @@
 
             <!-- Create Product Form -->
             <form id="productForm" class="postForm">
+                <img src="images/create-product.png" height="50" width="50">
                 <h2> Create Product </h2>
                 <label for="name">Product Name:</label>
                 <input type="text" id="name" name="name" required><br>
@@ -60,6 +66,7 @@
 
             <!-- Create Sale Form -->
             <form id="saleForm" class="postForm">
+                <img src="images/create-sale.png" height="50" width="50">
                 <h2> Create Sale </h2>
                 <label for="productId">Product ID:</label>
                 <input type="text" id="productId" name="productId" required><br>

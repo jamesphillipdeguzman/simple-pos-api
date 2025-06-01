@@ -68,13 +68,12 @@ function updateAuthUI() {
   productForm.style.display = "none";
 
   if (authState.isAuthenticated) {
-    console.log("userInfo text:", userInfo.textContent);
-
     // Show user info and logout button
     if (loginButton) loginButton.style.display = "none";
     if (userInfo) {
       userInfo.style.display = "block";
       userInfo.textContent = `Welcome, ${authState.user.displayName}`;
+      console.log("userInfo:", userInfo.textContent);
       appMessage.textContent = "Ready for testing";
       productForm.style.display = "flex";
     }
