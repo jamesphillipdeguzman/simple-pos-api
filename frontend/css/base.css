@@ -1,3 +1,13 @@
+:root {
+    --font-main: Roboto, "Segoe UI", sans-serif;
+    --color-bg: #e6f7ff;
+    --form-bg: #f9f9f9;
+    --color-btn: #4285f4;
+    --color-btn-hover: #357abd;
+    --color-border: #ccc;
+    --color-text: #333;
+}
+
 form {
     width: 50%;
     max-width: 80vw;
@@ -22,7 +32,7 @@ p {
 
 a {
     text-decoration: none;
-    color: #000;
+    color: black;
 }
 
 .demo {
@@ -31,6 +41,10 @@ a {
     max-width: 100%;
     gap: 2rem;
     margin: 2rem auto;
+}
+
+#userInfo {
+    font-family: var(--font-main);
 }
 
 #productForm {
@@ -81,7 +95,7 @@ label {
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 4px;
-    background-color: #4285f4;
+    background-color: var(--color-btn);
     color: white;
     cursor: pointer;
     font-size: 1rem;
@@ -89,11 +103,11 @@ label {
 }
 
 .auth-button:hover {
-    background-color: #357abd;
+    background-color: var(--color-btn-hover);
 }
 
 #userInfo {
-    color: #333;
+    color: var(--color-text);
     font-size: 1rem;
 }
 .pos-title {
