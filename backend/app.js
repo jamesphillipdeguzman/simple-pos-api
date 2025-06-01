@@ -71,7 +71,10 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Greet the user
 app.get('/', (req, res) => {
-  res.send('Welcome to Simple-POS-API by James De Guzman!');
+  res.send(`
+    <h1>Welcome to Simple-POS-API by James De Guzman!</h1>
+    <p>Please login at <a href="https://simple-pos-api.netlify.app/" target="_blank">https://simple-pos-api.netlify.app</a></p>
+    `);
 });
 
 // Mount routes at /auth, /api/products, and /api/sales
