@@ -28,9 +28,13 @@ window.addEventListener("DOMContentLoaded", () => {
         const data = await response.json();
         authState.isAuthenticated = true;
         authState.userName = data.name || "User";
+        appMessage.textContent =
+          "POST Method Test for Product & Sale Collections in MongoDB";
       } else {
         authState.isAuthenticated = false;
         authState.userName = null;
+        appMessage.textContent =
+          "Please sign in with Google to access this feature.";
       }
     } catch (error) {
       console.warn("Session check failed:", error);
@@ -46,14 +50,10 @@ window.addEventListener("DOMContentLoaded", () => {
     if (authState.isAuthenticated) {
       userInfo.textContent = `Welcome, ${authState.userName || "User"}`;
       productForm.style.display = "flex";
-      appMessage.textContent =
-        "POST Method Test for Product & Sale Collections in MongoDB";
     } else {
       userInfo.textContent = "Welcome, Guest";
       productForm.style.display = "none";
       saleForm.style.display = "none";
-      appMessage.textContent =
-        "Please sign in with Google to access this feature.";
     }
   }
 
