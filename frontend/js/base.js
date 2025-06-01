@@ -46,19 +46,16 @@ window.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const productResponse = await fetch(
-        "https://simple-pos-api.onrender.com/api/products",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          credentials: "include",
-          mode: "cors",
-          body: JSON.stringify(product),
-        }
-      );
+      const productResponse = await fetch("/api/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        credentials: "include",
+        mode: "cors",
+        body: JSON.stringify(product),
+      });
 
       productData = await productResponse.json();
 
@@ -101,19 +98,16 @@ window.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const saleResponse = await fetch(
-        "https://simple-pos-api.onrender.com/api/sales",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          credentials: "include",
-          mode: "cors",
-          body: JSON.stringify(sale),
-        }
-      );
+      const saleResponse = await fetch("/api/sales", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        credentials: "include",
+        mode: "cors",
+        body: JSON.stringify(sale),
+      });
 
       saleData = await saleResponse.json();
 
