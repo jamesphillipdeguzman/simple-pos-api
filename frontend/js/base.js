@@ -14,22 +14,6 @@ window.addEventListener("DOMContentLoaded", () => {
     userName: null,
   };
 
-  // Do not show the productFOrm by default
-  productForm.style.display = "none";
-
-  function updateAuthUI() {
-    if (!userInfo) return;
-
-    if (authState.isAuthenticated) {
-      userInfo.textContent = `Welcome, ${authState.userName || "User"}`;
-      productForm.style.display = "flex";
-    } else {
-      userInfo.textContent = "Welcome, Guest";
-      productForm.style.display = "none";
-      saleForm.style.display = "none";
-    }
-  }
-
   // Check session on load
   async function checkSession() {
     try {
@@ -54,6 +38,19 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     updateAuthUI();
+  }
+
+  function updateAuthUI() {
+    if (!userInfo) return;
+
+    if (authState.isAuthenticated) {
+      userInfo.textContent = `Welcome, ${authState.userName || "User"}`;
+      productForm.style.display = "flex";
+    } else {
+      userInfo.textContent = "Welcome, Guest";
+      productForm.style.display = "none";
+      saleForm.style.display = "none";
+    }
   }
 
   // Run this on load
