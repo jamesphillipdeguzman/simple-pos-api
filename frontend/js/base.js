@@ -103,9 +103,9 @@ window.addEventListener("DOMContentLoaded", () => {
       productForm.style.display = "none";
 
       // Delay alert to let DOM update
-      setTimeout(() => {
-        alert("Please sign in with Google to access this feature.");
-      }, 0);
+      // setTimeout(() => {
+      //   alert("Please sign in with Google to access this feature.");
+      // }, 0);
     }
   });
 
