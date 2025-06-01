@@ -37,6 +37,8 @@ app.use(express.json());
 // Parse form payloads
 app.use(express.urlencoded({ extended: true }));
 
+app.set('trust proxy', 1); // Render uses a reverse proxy, and you must explicitly trust the proxy for the secure flag to work. Otherwise, Express won't mark the cookie as secure and won't send it.
+
 // Create Session
 app.use(
   session({
