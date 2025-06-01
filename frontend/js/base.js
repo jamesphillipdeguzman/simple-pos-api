@@ -34,9 +34,6 @@ window.addEventListener("DOMContentLoaded", () => {
   productForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Check authentication
-    if (!checkAuthAndSubmit(e, "product")) return;
-
     // First, create a product
     const product = {
       name: document.getElementById("name").value,
@@ -92,9 +89,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
   saleForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    // Check authentication
-    if (!checkAuthAndSubmit(e, "sale")) return;
 
     // Second, create the sale
     const sale = {
