@@ -3,7 +3,7 @@ window.addEventListener("DOMContentLoaded", () => {
   let saleForm;
   let productData;
   let saleData;
-  let apiUrl = "https://simple-pos-api.netlify.app/";
+  let apiUrl = "https://simple-pos-api.onrender.com/";
 
   // let logoutButton;
 
