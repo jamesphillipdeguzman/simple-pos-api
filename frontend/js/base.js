@@ -4,70 +4,15 @@ window.addEventListener("DOMContentLoaded", () => {
   let productData;
   let saleData;
 
-  let loginButton;
-  let logoutButton;
-  let userInfo;
-  let appMessage;
+  // let logoutButton;
 
   let authState = {
     isAuthenticated: false,
     userName: null,
   };
 
-  // Check session on load
-  async function checkSession() {
-    try {
-      const response = await fetch(
-        "https://simple-pos-api.onrender.com/auth/status",
-        {
-          credentials: "include",
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        authState.isAuthenticated = true;
-        authState.userName = data.name || "User";
-      } else {
-        authState.isAuthenticated = false;
-        authState.userName = null;
-      }
-    } catch (error) {
-      console.warn("Session check failed:", error);
-      authState.isAuthenticated = false;
-    }
-
-    updateAuthUI();
-  }
-
-  function updateAuthUI() {
-    if (!userInfo) {
-      appMessage.textContent =
-        "Please sign in with Google to access this feature.";
-      return;
-    } else {
-    }
-
-    if (authState.isAuthenticated) {
-      userInfo.textContent = `Welcome, ${authState.userName || "User"}`;
-      productForm.style.display = "flex";
-    } else {
-      userInfo.textContent = "Welcome, Guest";
-      productForm.style.display = "none";
-      saleForm.style.display = "none";
-    }
-  }
-
-  // Run this on load
-  checkSession();
-
   productForm = document.getElementById("productForm");
   saleForm = document.getElementById("saleForm");
-  loginButton = document.getElementById("loginButton");
-  logoutButton = document.getElementById("logoutButton");
-  appMessage = document.getElementById("appMessage");
-
-  userInfo = document.getElementById("userInfo");
 
   // --- Set up totalAmount calculation when quantity changes ---
   const quantityInput = document.getElementById("quantity");
@@ -202,7 +147,7 @@ window.addEventListener("DOMContentLoaded", () => {
       alert("Error creating sale. Please try again.");
     }
   });
-  logoutButton.addEventListener("click", () => {
-    productForm.style.display = "none";
-  });
+  // logoutButton.addEventListener("click", () => {
+  //   productForm.style.display = "none";
+  // });
 });
