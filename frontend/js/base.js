@@ -3,7 +3,7 @@ window.addEventListener("DOMContentLoaded", () => {
   let saleForm;
   let productData;
   let saleData;
-  let apiUrl = "https://simple-pos-api.onrender.com";
+  // let apiUrl = "https://simple-pos-api.onrender.com";
 
   // let logoutButton;
 
@@ -47,7 +47,7 @@ window.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const productResponse = await fetch(`${apiUrl}/api/sales`, {
+      const productResponse = await fetch(`/api/products`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,7 +67,9 @@ window.addEventListener("DOMContentLoaded", () => {
           updateAuthUI();
           return;
         }
-        alert(`Error: ${productData.message}`);
+        alert(`Error: ${productData?.message || "Unknown error"}`);
+        console.log("Raw product response:", productData);
+
         return;
       }
 
@@ -99,7 +101,7 @@ window.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const saleResponse = await fetch(`${apiUrl}/api/sales`, {
+      const saleResponse = await fetch(`/api/sales`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -136,7 +138,4 @@ window.addEventListener("DOMContentLoaded", () => {
       alert("Error creating sale. Please try again.");
     }
   });
-  // logoutButton.addEventListener("click", () => {
-  //   productForm.style.display = "none";
-  // });
 });
