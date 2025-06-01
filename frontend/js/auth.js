@@ -1,5 +1,3 @@
-// AI Helped with this script for Pop-up Based OAuth Login to solve the cookie issue between Netlify and Render. Phew!
-// Auth state
 let authState = {
   isAuthenticated: false,
   user: null,
@@ -63,15 +61,27 @@ function updateAuthUI() {
   const loginButton = document.getElementById("loginButton");
   const userInfo = document.getElementById("userInfo");
   const logoutButton = document.getElementById("logoutButton");
+  const appMessage = document.getElementById("appMessage");
+  const productForm = document.getElementById("productForm");
 
   if (authState.isAuthenticated) {
+    console.log("userInfo text:", userInfo.textContent);
+
     // Show user info and logout button
     if (loginButton) loginButton.style.display = "none";
     if (userInfo) {
       userInfo.style.display = "block";
       userInfo.textContent = `Welcome, ${authState.user.displayName}`;
+      appMessage.textContent =
+        "POST Method Test for Product & Sale Collections in MongoDB";
+      productForm.style.display = "flex";
     }
-    if (logoutButton) logoutButton.style.display = "block";
+    if (logoutButton) {
+      logoutButton.style.display = "block";
+      appMessage.textContent =
+        "Please sign in with Google to access this feature.";
+      productForm.style.display = "none";
+    }
   } else {
     // Show login button
     if (loginButton) loginButton.style.display = "block";

@@ -4,74 +4,10 @@ window.addEventListener("DOMContentLoaded", () => {
   let productData;
   let saleData;
 
-  let loginButton;
-  let logoutButton;
-  let userInfo;
-  let appMessage;
-
-  let authState = {
-    isAuthenticated: false,
-    userName: null,
-  };
-
-  // Check session on load
-  async function checkSession() {
-    try {
-      const response = await fetch(
-        "https://simple-pos-api.onrender.com/auth/status",
-        {
-          credentials: "include",
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        authState.isAuthenticated = true;
-        authState.userName = data.name || "User";
-      } else {
-        authState.isAuthenticated = false;
-        authState.userName = null;
-      }
-    } catch (error) {
-      console.warn("Session check failed:", error);
-      authState.isAuthenticated = false;
-    }
-
-    updateAuthUI();
-  }
-
-  function updateAuthUI() {
-    if (!userInfo) {
-      appMessage.textContent =
-        "Please sign in with Google to access this feature.";
-      return;
-    } else {
-      appMessage.textContent =
-        "POST Method Test for Product & Sale Collections in MongoDB";
-    }
-
-    if (authState.isAuthenticated) {
-      userInfo.textContent = `Welcome, ${authState.userName || "User"}`;
-      productForm.style.display = "flex";
-    } else {
-      userInfo.textContent = "Welcome, Guest";
-      productForm.style.display = "none";
-      saleForm.style.display = "none";
-    }
-  }
-
-  // Run this on load
-  checkSession();
-
-  // Check if user is authenticated before allowing form submissions
-  function checkAuthAndSubmit(e, formType) {
-    if (!authState.isAuthenticated) {
-      e.preventDefault();
-      alert("Please login first to create products or sales");
-      return false;
-    }
-    return true;
-  }
+  // let loginButton;
+  // let logoutButton;
+  // let userInfo;
+  // let appMessage;
 
   productForm = document.getElementById("productForm");
   saleForm = document.getElementById("saleForm");
@@ -97,25 +33,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
   // -----------------------------------------------------------------------
-
-  loginButton.addEventListener("click", () => {
-    console.log("userInfo text:", userInfo.textContent);
-    productForm.style.display = "flex";
-    if (
-      userInfo.textContent &&
-      userInfo.textContent.trim() !== "Welcome, Guest"
-    ) {
-      productForm.style.display = "flex";
-    } else {
-      userInfo.textContent = "Welcome guest"; // Set first
-      productForm.style.display = "none";
-
-      // Delay alert to let DOM update
-      // setTimeout(() => {
-      //   alert("Please sign in with Google to access this feature.");
-      // }, 0);
-    }
-  });
 
   productForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -233,9 +150,8 @@ window.addEventListener("DOMContentLoaded", () => {
       alert("Error creating sale. Please try again.");
     }
   });
-  logoutButton.addEventListener("click", () => {
-    productForm.style.display = "none";
-    appMessage.textContent =
-      "Please sign in with Google to access this feature.";
-  });
+  // logoutButton.addEventListener("click", () => {
+  //   productForm.style.display = "none";
+
+  // });
 });
