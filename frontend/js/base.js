@@ -23,7 +23,8 @@ window.addEventListener("DOMContentLoaded", () => {
           credentials: "include",
         }
       );
-
+      appMessage.textContent =
+        "Please sign in with Google to access this feature.";
       if (response.ok) {
         const data = await response.json();
         authState.isAuthenticated = true;
@@ -33,8 +34,6 @@ window.addEventListener("DOMContentLoaded", () => {
       } else {
         authState.isAuthenticated = false;
         authState.userName = null;
-        appMessage.textContent =
-          "Please sign in with Google to access this feature.";
       }
     } catch (error) {
       console.warn("Session check failed:", error);
@@ -232,5 +231,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
   logoutButton.addEventListener("click", () => {
     productForm.style.display = "none";
+    appMessage.textContent =
+      "Please sign in with Google to access this feature.";
   });
 });
