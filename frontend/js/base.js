@@ -33,12 +33,12 @@ window.addEventListener("DOMContentLoaded", () => {
       } else {
         authState.isAuthenticated = false;
         authState.userName = null;
-        appMessage.textContent =
-          "Please sign in with Google to access this feature.";
       }
     } catch (error) {
       console.warn("Session check failed:", error);
       authState.isAuthenticated = false;
+      appMessage.textContent =
+        "Please sign in with Google to access this feature.";
     }
 
     updateAuthUI();
