@@ -9,6 +9,10 @@ form {
     font-family: Arial, sans-serif;
 }
 
+body {
+    background-color: #e6f7ff;
+}
+
 h1,
 h2,
 p {
@@ -92,6 +96,30 @@ label {
     color: #333;
     font-size: 1rem;
 }
+.pos-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+}
+
+.pos-title h1 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* adds space between the image and text */
+    margin: 0;   /* remove default h1 margin */
+    font-size: 1.5rem;
+}
+
+.pos-title img {
+    vertical-align: middle;
+}
+
+.pos-title a {
+    text-decoration: none;
+    color: inherit;
+}
+
 
 header {
     display: flex;
@@ -100,6 +128,7 @@ header {
     padding: 1rem;
     background-color: #f8f9fa;
     border-bottom: 1px solid #dee2e6;
+    border-radius: 10px;
 }
 
 header h1 {
@@ -118,9 +147,13 @@ header h1 {
     form {
         width: 90%;
     }
-
+ 
     header {
         display: flex;
         flex-direction: column;
+        
+    }
+    h1 {
+        font-size: 1rem;
     }
 }
