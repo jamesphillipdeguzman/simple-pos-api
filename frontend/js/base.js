@@ -28,8 +28,6 @@ window.addEventListener("DOMContentLoaded", () => {
         const data = await response.json();
         authState.isAuthenticated = true;
         authState.userName = data.name || "User";
-        appMessage.textContent =
-          "POST Method Test for Product & Sale Collections in MongoDB";
       } else {
         authState.isAuthenticated = false;
         authState.userName = null;
@@ -37,15 +35,20 @@ window.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       console.warn("Session check failed:", error);
       authState.isAuthenticated = false;
-      appMessage.textContent =
-        "Please sign in with Google to access this feature.";
     }
 
     updateAuthUI();
   }
 
   function updateAuthUI() {
-    if (!userInfo) return;
+    if (!userInfo) {
+      appMessage.textContent =
+        "Please sign in with Google to access this feature.";
+      return;
+    } else {
+      appMessage.textContent =
+        "POST Method Test for Product & Sale Collections in MongoDB";
+    }
 
     if (authState.isAuthenticated) {
       userInfo.textContent = `Welcome, ${authState.userName || "User"}`;
