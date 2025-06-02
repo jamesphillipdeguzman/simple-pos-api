@@ -72,6 +72,8 @@ window.addEventListener("DOMContentLoaded", () => {
       }
 
       alert("Product created successfully!");
+      console.log("Product created", productData);
+
       saleForm.reset();
       saleForm.style.display = "flex";
 
