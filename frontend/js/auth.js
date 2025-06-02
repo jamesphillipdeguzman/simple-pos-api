@@ -31,12 +31,10 @@ function openGoogleAuthPopup() {
 
       updateAuthUI();
 
-      if (popup && !popup.closed) {
-        try {
-          popup.close();
-        } catch (err) {
-          console.warn("Popup cannot be closed:", err);
-        }
+      try {
+        popup.close();
+      } catch (err) {
+        console.warn("Popup cannot be closed:", err);
       }
     }
   });
