@@ -127,9 +127,19 @@ router.get('/auth/status', (req, res) => {
  *       302:
  *         description: Redirects to homepage after logout
  */
-router.get('/logout', (req, res) => {
-  req.logout(() => {
-    res.redirect('/');
+router.get('/logout', (req, res, next) => {
+  req.logout((err) => {
+    if (err) return next(err);
+
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('Failed to destroy session during logout:', err);
+      }
+      // Clear the cookie so browser removes session cookie
+      res.clearCookie('connect.sid', { path: '/' });
+
+      res.redirect('/');
+    });
   });
 });
 

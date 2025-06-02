@@ -39,17 +39,17 @@ app.use(express.urlencoded({ extended: true }));
 
 app.set('trust proxy', 1); // Render uses a reverse proxy, and you must explicitly trust the proxy for the secure flag to work. Otherwise, Express won't mark the cookie as secure and won't send it.
 
-// Create Session
+// Create Session middleware
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
+    resave: false, // Avoids resaving unchanged sessions
+    saveUninitialized: false, //  Prevents creating a new session cookie unless something is stored in the session.
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Required for HTTPS. Evaluates to true for production
+      secure: process.env.NODE_ENV === 'production', // Required for HTTPS. Evaluates to true for production; sets cookie secure flag only in production
       sameSite: 'none', // Required for cross-origin
-      maxAge: 1000 * 60 * 60, // 1 hour
+      maxAge: 1000 * 60 * 60, // 1 hour; sets session expiration
     },
     proxy: true, // Required for secure cookies behind a proxy
   }),
