@@ -3,8 +3,8 @@ let authState = {
   user: null,
 };
 
-const BACKEND_URL = "https://simple-pos-api.onrender.com";
-const FRONTEND_URL = "https://simple-pos-api.netlify.app";
+export const BACKEND_ORIGIN = "https://simple-pos-api.onrender.com";
+const FRONTEND_ORIGIN = "https://simple-pos-api.netlify.app";
 
 function openGoogleAuthPopup() {
   const width = 500;
@@ -13,7 +13,7 @@ function openGoogleAuthPopup() {
   const top = window.screenY + (window.outerHeight - height) / 2;
 
   const popup = window.open(
-    `${BACKEND_URL}/auth/google`,
+    `${BACKEND_ORIGIN}/auth/google`,
     "Google Auth",
     `width=${width},height=${height},left=${left},top=${top}`
   );
@@ -22,8 +22,8 @@ function openGoogleAuthPopup() {
   window.addEventListener("message", (event) => {
     console.log("PostMessage received:", event.origin, event.data);
 
-    // Accept only messages from our own frontend
-    if (event.origin !== BACKEND_URL) return;
+    // Accept only messages from the backend URL stated above
+    if (event.origin !== BACKEND_ORIGIN) return;
 
     if (event.data.type === "GOOGLE_AUTH_SUCCESS") {
       authState.isAuthenticated = true;
@@ -31,14 +31,20 @@ function openGoogleAuthPopup() {
 
       updateAuthUI();
 
-      if (popup) popup.close();
+      if (popup && !popup.closed) {
+        try {
+          popup.close();
+        } catch (err) {
+          console.warn("Popup cannot be closed:", err);
+        }
+      }
     }
   });
 }
 
 async function checkAuthStatus() {
   try {
-    const response = await fetch(`${BACKEND_URL}/auth/status`, {
+    const response = await fetch(`${BACKEND_ORIGIN}/auth/status`, {
       credentials: "include",
       mode: "cors",
     });
@@ -85,7 +91,7 @@ function updateAuthUI() {
 
 async function handleLogout() {
   try {
-    await fetch(`${BACKEND_URL}/logout`, {
+    await fetch(`${BACKEND_ORIGIN}/logout`, {
       credentials: "include",
       mode: "cors",
     });

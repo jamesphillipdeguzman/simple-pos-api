@@ -46,7 +46,9 @@ router.get(
  */
 router.get(
   '/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
+  passport.authenticate('google', {
+    failureRedirect: '/',
+  }),
   (req, res) => {
     console.log('Google callback - User:', req.user);
     console.log('Google callback - Session:', req.session);

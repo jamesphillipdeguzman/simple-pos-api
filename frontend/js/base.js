@@ -1,11 +1,9 @@
+import { BACKEND_ORIGIN } from "./auth.js";
 window.addEventListener("DOMContentLoaded", () => {
   let productForm;
   let saleForm;
   let productData;
   let saleData;
-  let apiUrl = "https://simple-pos-api.onrender.com";
-
-  // let logoutButton;
 
   let authState = {
     isAuthenticated: false,
@@ -47,7 +45,7 @@ window.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const productResponse = await fetch(`${apiUrl}/api/products`, {
+      const productResponse = await fetch(`${BACKEND_ORIGIN}/api/products`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -101,7 +99,7 @@ window.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
-      const saleResponse = await fetch(`${apiUrl}/api/sales`, {
+      const saleResponse = await fetch(`${BACKEND_ORIGIN}/api/sales`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
