@@ -55,7 +55,7 @@ a {
     display: none;
 }
 
-#submitProduct {
+.submit {
     height: 40px;
 }
 
