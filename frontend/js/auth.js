@@ -51,6 +51,9 @@ async function checkAuthStatus() {
     authState.isAuthenticated = data.authenticated;
     authState.user = data.user;
 
+    console.log("Auth State:", authState);
+    console.log("Cookie in document.cookie:", document.cookie);
+
     updateAuthUI();
   } catch (error) {
     console.error("Error checking auth status:", error);
@@ -96,6 +99,7 @@ async function handleLogout() {
 
     authState.isAuthenticated = false;
     authState.user = null;
+    console.log("Logged out successfully, auth state reset.");
 
     updateAuthUI();
   } catch (error) {

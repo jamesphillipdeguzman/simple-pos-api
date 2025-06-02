@@ -136,7 +136,11 @@ router.get('/logout', (req, res, next) => {
         console.error('Failed to destroy session during logout:', err);
       }
       // Clear the cookie so browser removes session cookie
-      res.clearCookie('connect.sid', { path: '/' });
+      res.clearCookie('connect.sid', {
+        path: '/',
+        sameSite: 'none',
+        secure: true,
+      });
 
       res.redirect('/');
     });
