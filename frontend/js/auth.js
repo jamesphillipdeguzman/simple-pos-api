@@ -1,4 +1,4 @@
-import jwtDecode from "jwt-decode";
+import jwtDecode from "https://cdn.skypack.dev/jwt-decode";
 
 let authState = {
   isAuthenticated: false,
