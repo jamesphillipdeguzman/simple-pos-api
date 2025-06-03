@@ -50,10 +50,10 @@ function openGoogleAuthPopup() {
       authState.isAuthenticated = true;
       authState.user = decoded;
 
-      // Force refresh the page to reinitialize UI and session state
-      window.location.reload();
-
-      // updateAuthUI();
+      // Force refresh the page to reinitialize UI and session state; add 100ms to allow popup to close cleanly
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
 
       try {
         popup.close();
