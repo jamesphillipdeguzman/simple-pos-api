@@ -57,6 +57,8 @@ function openGoogleAuthPopup() {
       } catch (err) {
         console.warn("Popup cannot be closed:", err);
       }
+      // Force refresh the page to reinitialize UI and session state
+      window.location.reload();
     }
   });
 }
@@ -123,7 +125,7 @@ async function handleLogout() {
       mode: "cors",
     });
 
-    //localStorage.removeItem("token"); // Ensure this is removed from client storage to avoid misuse or attacks; However I removed this line as it messes up the UI by hiding the logout button and productForm
+    localStorage.removeItem("token"); // Ensure this is removed from client storage to avoid misuse or attacks; However I removed this line as it messes up the UI by hiding the logout button and productForm
 
     authState.isAuthenticated = false;
     authState.user = null;
