@@ -65,6 +65,8 @@ app.use((req, res, next) => {
   console.log('Session:', req.session);
   console.log('Session ID:', req.sessionID);
   console.log('Cookies:', req.cookies);
+  console.log('Cookie names:', Object.keys(req.cookies));
+
   next();
 });
 
