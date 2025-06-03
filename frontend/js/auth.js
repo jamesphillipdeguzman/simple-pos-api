@@ -57,9 +57,9 @@ function openGoogleAuthPopup() {
       } catch (err) {
         console.warn("Popup cannot be closed:", err);
       }
-      // Force refresh the page to reinitialize UI and session state
-      window.location.reload();
     }
+    // Force refresh the page to reinitialize UI and session state
+    window.location.reload();
   });
 }
 
