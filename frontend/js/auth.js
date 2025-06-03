@@ -53,9 +53,9 @@ function openGoogleAuthPopup() {
       try {
         popup.close();
         // Force refresh the page to reinitialize UI and session state; add 100ms to allow popup to close cleanly
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 100);
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
       } catch (err) {
         console.warn("Popup cannot be closed:", err);
       }
