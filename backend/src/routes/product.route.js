@@ -9,7 +9,7 @@ import {
 
 import { validateProduct } from '../middlewares/product.validation.middleware.js';
 import { validate } from '../middlewares/validate.middleware.js';
-import { ensureAuth } from '../middlewares/auth.middleware.js';
+import { hybridAuth } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
@@ -27,7 +27,7 @@ const router = express.Router();
  *      500:
  *        description: An error occured while fetching products
  */
-router.get('/', ensureAuth, getProducts);
+router.get('/', hybridAuth, getProducts);
 
 // GET a product by Id
 /**
@@ -80,7 +80,7 @@ router.get('/:id', getProductById);
  *        description: An error occured while creating the product
  *
  */
-router.post('/', ensureAuth, validateProduct, validate, postProduct);
+router.post('/', hybridAuth, validateProduct, validate, postProduct);
 
 // PUT or UPDATE a product
 /**

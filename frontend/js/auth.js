@@ -1,10 +1,12 @@
+import jwtDecode from "jwt-decode";
+
 let authState = {
   isAuthenticated: false,
   user: null,
 };
 
 export const BACKEND_ORIGIN = "https://simple-pos-api.onrender.com";
-const FRONTEND_ORIGIN = "https://simple-pos-api.netlify.app";
+// FRONTEND_ORIGIN = "https://simple-pos-api.netlify.app";
 
 function openGoogleAuthPopup() {
   const width = 500;
@@ -18,6 +20,12 @@ function openGoogleAuthPopup() {
     `width=${width},height=${height},left=${left},top=${top}`
   );
 
+  // Immediately check if the pop-up failed to open
+  if (!popup || popup.closed || typeof popup.closed === "undefined") {
+    window.location.href = `${BACKEND_ORIGIN}/auth/google`;
+    return;
+  }
+
   // Listen for message from popup
   window.addEventListener("message", (event) => {
     console.log("PostMessage received:", event.origin, event.data);
@@ -26,8 +34,21 @@ function openGoogleAuthPopup() {
     if (event.origin !== BACKEND_ORIGIN) return;
 
     if (event.data.type === "GOOGLE_AUTH_SUCCESS") {
+      const { token } = event.data;
+      if (token) localStorage.setItem("token", token); // Store JWT
+
+      let decoded = null;
+
+      try {
+        // Decode JWT to extract user info
+        decoded = jwtDecode(token);
+        console.log("Decoded User Info: ", decoded);
+      } catch (err) {
+        console.error("JWT decode failed", err);
+      }
+
       authState.isAuthenticated = true;
-      authState.user = event.data.user;
+      authState.user = decoded;
 
       updateAuthUI();
 
@@ -42,7 +63,12 @@ function openGoogleAuthPopup() {
 
 async function checkAuthStatus() {
   try {
+    const token = localStorage.getItem("token");
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
     const response = await fetch(`${BACKEND_ORIGIN}/auth/status`, {
+      method: "GET",
+      headers,
       credentials: "include",
       mode: "cors",
     });
