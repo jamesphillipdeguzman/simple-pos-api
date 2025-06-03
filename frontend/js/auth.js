@@ -54,8 +54,6 @@ function openGoogleAuthPopup() {
 
       try {
         popup.close();
-        // Force refresh the page to reinitialize UI and session state
-        window.location.reload();
       } catch (err) {
         console.warn("Popup cannot be closed:", err);
       }
@@ -130,6 +128,8 @@ async function handleLogout() {
     authState.isAuthenticated = false;
     authState.user = null;
     console.log("Logged out successfully, auth state reset.");
+    // Force refresh the page to reinitialize UI and session state
+    window.location.reload();
 
     updateAuthUI();
   } catch (error) {
