@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 // Load environment variables first
 dotenv.config();
 import express from 'express';
-import helmet from 'helmet';
+// import helmet from 'helmet';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import productRoutes from './src/routes/product.route.js';
@@ -24,33 +24,33 @@ console.log('Secure cookie:', process.env.NODE_ENV === 'production');
 const app = express();
 
 // Apply helmet with custom config
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      useDefaults: true,
-      directives: {
-        // Allow frontend to use Skypack, Google APIs, etc.
-        'script-src': [
-          "'self'",
-          'https://cdn.skypack.dev',
-          'https://accounts.google.com',
-          'https://apis.google.com',
-        ],
-        'frame-src': ["'self'", 'https://accounts.google.com'], // allow popup to load Google
-        'img-src': ["'self'", 'data:', 'https://*.googleusercontent.com'],
-        'connect-src': [
-          "'self'",
-          'https://simple-pos-api.onrender.com',
-          'https://simple-pos-api.netlify.app',
-        ],
-      },
-    },
-    crossOriginEmbedderPolicy: false, // Disable COEP to avoid SharedArrayBuffer requirement
-    crossOriginOpenerPolicy: false, // Disable COOP to support popup/OAuth
-    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
-    frameguard: { action: 'sameorigin' }, // Prevent clickjacking
-  }),
-);
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       useDefaults: true,
+//       directives: {
+//         // Allow frontend to use Skypack, Google APIs, etc.
+//         'script-src': [
+//           "'self'",
+//           'https://cdn.skypack.dev',
+//           'https://accounts.google.com',
+//           'https://apis.google.com',
+//         ],
+//         'frame-src': ["'self'", 'https://accounts.google.com'], // allow popup to load Google
+//         'img-src': ["'self'", 'data:', 'https://*.googleusercontent.com'],
+//         'connect-src': [
+//           "'self'",
+//           'https://simple-pos-api.onrender.com',
+//           'https://simple-pos-api.netlify.app',
+//         ],
+//       },
+//     },
+//     crossOriginEmbedderPolicy: false, // Disable COEP to avoid SharedArrayBuffer requirement
+//     crossOriginOpenerPolicy: false, // Disable COOP to support popup/OAuth
+//     referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+//     frameguard: { action: 'sameorigin' }, // Prevent clickjacking
+//   }),
+// );
 
 // CORS middleware
 app.use(
