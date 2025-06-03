@@ -39,6 +39,9 @@ function openGoogleAuthPopup() {
 
       let decoded = null;
 
+      // Force refresh the page to reinitialize UI and session state
+      window.location.reload();
+
       try {
         // Decode JWT to extract user info
         decoded = jwtDecode(token);
