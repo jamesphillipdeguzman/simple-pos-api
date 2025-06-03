@@ -10,6 +10,7 @@ import swaggerSpec from './src/docs/swagger.js';
 import session from 'express-session';
 import passport from './src/config/passport.config.js';
 import authRoutes from './src/routes/auth.route.js';
+import cookieParser from 'cookie-parser';
 
 console.log('ENV:', {
   CLIENT_ORIGIN: process.env.CLIENT_ORIGIN,
@@ -36,6 +37,9 @@ app.use(express.json());
 
 // Parse form payloads
 app.use(express.urlencoded({ extended: true }));
+
+// Without this, req.cookies will always be undefined
+app.use(cookieParser());
 
 app.set('trust proxy', 1); // Render uses a reverse proxy, and you must explicitly trust the proxy for the secure flag to work. Otherwise, Express won't mark the cookie as secure and won't send it.
 
