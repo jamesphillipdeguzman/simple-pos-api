@@ -54,6 +54,8 @@ function openGoogleAuthPopup() {
 
       try {
         popup.close();
+        // Force refresh the page to reinitialize UI and session state
+        window.location.reload();
       } catch (err) {
         console.warn("Popup cannot be closed:", err);
       }
@@ -98,8 +100,6 @@ function updateAuthUI() {
   if (authState.isAuthenticated) {
     if (loginButton) loginButton.style.display = "none";
     if (userInfo) {
-      // Force refresh the page to reinitialize UI and session state
-      window.location.reload();
       userInfo.style.display = "block";
       userInfo.textContent = `Welcome, ${authState.user.displayName}`;
       console.log("userInfo:", userInfo.textContent);
