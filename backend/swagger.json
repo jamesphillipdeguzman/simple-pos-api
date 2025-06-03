@@ -141,12 +141,12 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful login, send user data back via postMessage",
+            "description": "OAuth login success, JWT returned to client via postMessage",
             "content": {
               "text/html": {
                 "schema": {
                   "type": "string",
-                  "example": "<script>window.opener.postMessage(...)</script>"
+                  "example": "<script>window.opener.postMessage({ token: 'JWT_TOKEN' },'https://your-frontend.netlify.app')</script>"
                 }
               }
             }
