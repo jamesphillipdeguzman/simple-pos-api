@@ -53,7 +53,7 @@ function openGoogleAuthPopup() {
       // Force refresh the page to reinitialize UI and session state
       window.location.reload();
 
-      updateAuthUI();
+      // updateAuthUI();
 
       try {
         popup.close();
