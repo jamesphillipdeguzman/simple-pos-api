@@ -123,6 +123,8 @@ async function handleLogout() {
       mode: "cors",
     });
 
+    localStorage.removeItem("token"); // Ensure this is removed from client storage to avoid misuse or attacks
+
     authState.isAuthenticated = false;
     authState.user = null;
     console.log("Logged out successfully, auth state reset.");
