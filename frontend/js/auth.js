@@ -50,6 +50,9 @@ function openGoogleAuthPopup() {
       authState.isAuthenticated = true;
       authState.user = decoded;
 
+      // Force refresh the page to reinitialize UI and session state
+      window.location.reload();
+
       updateAuthUI();
 
       try {
@@ -58,8 +61,6 @@ function openGoogleAuthPopup() {
         console.warn("Popup cannot be closed:", err);
       }
     }
-    // Force refresh the page to reinitialize UI and session state
-    window.location.reload();
   });
 }
 
