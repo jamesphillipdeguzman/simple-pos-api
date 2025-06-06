@@ -10,6 +10,7 @@ import {
 import { validateProduct } from '../middlewares/product.validation.middleware.js';
 import { validate } from '../middlewares/validate.middleware.js';
 import { hybridAuth } from '../middlewares/auth.middleware.js';
+import { validMongoIdParam } from '../middlewares/common.middleware.js';
 
 const router = express.Router();
 
@@ -142,6 +143,6 @@ router.put('/:id', validateProduct, validate, updateProduct);
  *        description: An error occured while deleting the product
  *
  */
-router.delete('/:id', deleteProduct);
+router.delete('/:id', validMongoIdParam, validate, deleteProduct);
 
 export default router;
